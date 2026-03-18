@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LancerHub Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --cream:#fdf8f0; --cream-deep:#f5edd8; --cream-card:#fffdf7;
+  --pista-light:#d4e8d0; --pista-dark:#6b9e62; --pista-deep:#3d7535;
+  --sky-light:#ceedf8; --sky-dark:#3a9bbf; --sky-deep:#1a6f8f;
+  --peach-light:#f5d5bc; --peach:#e8a87c; --coral:#d9614c;
+  --brown:#3d2b1a; --text:#2d2016; --text-mid:#6b5040; --text-soft:#9c8070;
+  --border:#e0d0b8; --border-light:#ede4d4;
+  --shadow:0 6px 24px rgba(93,61,30,.12);
+  --radius:14px; --font-head:'Playfair Display',serif; --font-body:'Plus Jakarta Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream-deep);color:var(--text);font-family:var(--font-body);font-size:14px;min-height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--pista-dark);border-radius:99px}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--cream);display:flex;align-items:center;justify-content:center;z-index:999}
+.login-box{background:var(--cream-card);border:2px solid var(--border);border-radius:22px;padding:48px 40px;width:360px;box-shadow:var(--shadow);text-align:center}
+.logo{font-family:var(--font-head);font-size:28px;font-weight:800;color:var(--brown);margin-bottom:4px}
+.logo span{color:var(--pista-dark)}
+.logo-sub{font-size:12px;color:var(--text-soft);margin-bottom:28px;letter-spacing:.5px;text-transform:uppercase}
+.login-box label{display:block;text-align:left;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px}
+.login-box input{width:100%;background:var(--cream);border:2px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;margin-bottom:16px;transition:border-color .15s}
+.login-box input:focus{border-color:var(--pista-dark)}
+#login-btn{width:100%;background:var(--pista-dark);color:#fff;border:none;border-radius:10px;padding:13px;font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
+#login-btn:hover{background:var(--pista-deep)}
+#login-error{color:var(--coral);font-size:13px;margin-top:12px;min-height:20px;font-weight:500}
+.hint{font-size:12px;color:var(--text-soft);margin-top:16px}
+
+/* LAYOUT */
+#app{display:none}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+.sidebar{background:var(--cream-card);border-right:2px solid var(--border);display:flex;flex-direction:column}
+.sb-top{padding:22px 18px;border-bottom:1px solid var(--border-light)}
+.sb-logo{font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--brown)}
+.sb-logo span{color:var(--pista-dark)}
+.sb-badge{display:inline-block;background:var(--coral);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:6px}
+.nav{flex:1;padding:14px 10px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;color:var(--text-soft);font-weight:500;margin-bottom:3px;font-size:13px;transition:.15s}
+.nav-link:hover{background:var(--cream-deep);color:var(--text)}
+.nav-link.active{background:var(--pista-light);color:var(--pista-deep);font-weight:600}
+.sb-footer{padding:14px 10px;border-top:1px solid var(--border-light)}
+.logout-row{display:flex;align-items:center;gap:10px;padding:8px 10px;cursor:pointer;border-radius:10px;color:var(--text-soft);font-size:13px;transition:.15s}
+.logout-row:hover{background:var(--peach-light);color:var(--coral)}
+
+.main{padding:28px;overflow-y:auto}
+.page-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.page-title{font-family:var(--font-head);font-size:24px;font-weight:700;color:var(--brown)}
+.page-sub{font-size:12px;color:var(--text-soft);margin-top:3px}
+
+/* SECTIONS */
+.section{display:none}.section.active{display:block}
+
+/* STAT CARDS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat{background:var(--cream-card);border:2px solid var(--border-light);border-radius:var(--radius);padding:20px}
+.stat .s-icon{font-size:26px;margin-bottom:8px}
+.stat .s-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-soft);font-weight:600;margin-bottom:4px}
+.stat .s-value{font-family:var(--font-head);font-size:28px;font-weight:800;color:var(--brown)}
+.stat .s-sub{font-size:11px;color:var(--pista-deep);margin-top:3px;font-weight:500}
+
+/* CARD */
+.card{background:var(--cream-card);border:2px solid var(--border-light);border-radius:var(--radius);padding:22px;margin-bottom:18px}
+.card-title{font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--brown);margin-bottom:16px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:11px 13px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-soft);border-bottom:2px solid var(--border);font-weight:600}
+td{padding:12px 13px;font-size:13px;border-bottom:1.5px solid var(--border-light);vertical-align:middle}
+tr:hover td{background:var(--cream-deep)}
+
+/* BADGE */
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;text-transform:uppercase}
+.b-green{background:var(--pista-light);color:var(--pista-deep)}
+.b-sky{background:var(--sky-light);color:var(--sky-deep)}
+.b-red{background:#fde8e8;color:var(--coral)}
+.b-gray{background:var(--cream-deep);color:var(--text-mid)}
+.b-peach{background:var(--peach-light);color:#8b4513}
+
+/* BTN */
+.btn{cursor:pointer;border:none;font-family:var(--font-body);font-size:12px;font-weight:600;border-radius:8px;padding:6px 13px;transition:.15s;display:inline-flex;align-items:center;gap:5px}
+.btn-p{background:var(--pista-dark);color:#fff}.btn-p:hover{background:var(--pista-deep)}
+.btn-r{background:var(--coral);color:#fff}.btn-r:hover{background:#c0452f}
+.btn-o{background:transparent;border:1.5px solid var(--border);color:var(--text-mid)}.btn-o:hover{border-color:var(--pista-dark);color:var(--pista-deep)}
+
+/* TOOLBAR */
+.toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.search{flex:1;min-width:180px;position:relative}
+.search input{width:100%;background:var(--cream);border:2px solid var(--border);border-radius:10px;padding:9px 12px 9px 34px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none}
+.search input:focus{border-color:var(--pista-dark)}
+.search .si{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px}
+select.fil{background:var(--cream);border:2px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;cursor:pointer}
+
+/* ACTIVITY */
+.act-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border-light)}
+.act-item:last-child{border:none}
+.act-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.act-text{font-size:13px;color:var(--text);line-height:1.4}
+.act-time{font-size:11px;color:var(--text-soft);margin-top:1px}
+
+/* TOAST */
+#toast{position:fixed;bottom:22px;right:22px;z-index:9999;background:var(--cream-card);border:2px solid var(--border);border-left:4px solid var(--pista-dark);border-radius:12px;padding:12px 18px;font-size:13px;color:var(--text);box-shadow:var(--shadow);display:flex;align-items:center;gap:9px;transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);max-width:280px;font-weight:500}
+#toast.show{transform:translateY(0);opacity:1}
+
+/* MODAL */
+.m-overlay{position:fixed;inset:0;background:rgba(61,43,26,.45);backdrop-filter:blur(3px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s}
+.m-overlay.open{opacity:1;pointer-events:all}
+.m-box{background:var(--cream-card);border:2px solid var(--border);border-radius:18px;padding:30px;width:100%;max-width:420px;box-shadow:var(--shadow)}
+.m-box h3{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--brown);margin-bottom:8px}
+.m-box p{font-size:13px;color:var(--text-soft);margin-bottom:20px}
+.m-actions{display:flex;gap:10px;justify-content:flex-end}
+
+@media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{display:none}.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo">Lancer<span>Hub</span></div>
+    <div class="logo-sub">Admin Panel</div>
+    <div>
+      <label>Username</label>
+      <input type="text" id="inp-user" placeholder="admin" value="admin"/>
+    </div>
+    <div>
+      <label>Password</label>
+      <input type="password" id="inp-pass" placeholder="lancerhub2026" value="lancerhub2026"/>
+    </div>
+    <button id="login-btn" onclick="doLogin()">Sign In →</button>
+    <div id="login-error"></div>
+    <div class="hint">Default: admin / lancerhub2026</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sb-top">
+        <div class="sb-logo">Lancer<span>Hub</span><span class="sb-badge">ADMIN</span></div>
+      </div>
+      <div class="nav">
+        <div class="nav-link active" onclick="goTo('dashboard',this)">📊 Dashboard</div>
+        <div class="nav-link" onclick="goTo('users',this)">👥 Users</div>
+        <div class="nav-link" onclick="goTo('jobs',this)">💼 Jobs</div>
+        <div class="nav-link" onclick="goTo('invoices',this)">💳 Invoices</div>
+        <div class="nav-link" onclick="goTo('settings',this)">⚙️ Settings</div>
+      </div>
+      <div class="sb-footer">
+        <div class="logout-row" onclick="doLogout()">🚪 Logout</div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <!-- DASHBOARD -->
+      <div class="section active" id="sec-dashboard">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Dashboard</div>
+            <div class="page-sub">Welcome back! Here is your platform overview.</div>
+          </div>
+          <button class="btn btn-p" onclick="loadAll()">🔄 Refresh</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="s-icon">👥</div><div class="s-label">Total Users</div><div class="s-value" id="st-users">—</div><div class="s-sub">Freelancers + Clients</div></div>
+          <div class="stat"><div class="s-icon">💼</div><div class="s-label">Total Jobs</div><div class="s-value" id="st-jobs">—</div><div class="s-sub">All listings</div></div>
+          <div class="stat"><div class="s-icon">💳</div><div class="s-label">Invoices</div><div class="s-value" id="st-inv">—</div><div class="s-sub" id="st-inv-sub">Loading...</div></div>
+          <div class="stat"><div class="s-icon">📨</div><div class="s-label">Proposals</div><div class="s-value" id="st-prop">—</div><div class="s-sub">Total submitted</div></div>
+        </div>
+        <div class="two-col">
+          <div class="card"><div class="card-title">Recent Users</div><div id="dash-users">Loading...</div></div>
+          <div class="card"><div class="card-title">Recent Jobs</div><div id="dash-jobs">Loading...</div></div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div class="section" id="sec-users">
+        <div class="page-head">
+          <div><div class="page-title">Users</div><div class="page-sub">Manage all registered users</div></div>
+        </div>
+        <div class="card">
+          <div class="toolbar">
+            <div class="search"><span class="si">🔍</span><input type="text" placeholder="Search by name..." oninput="searchUsers(this.value)"/></div>
+            <select class="fil" onchange="roleFilter(this.value)">
+              <option value="all">All Roles</option>
+              <option value="freelancer">Freelancers</option>
+              <option value="client">Clients</option>
+              <option value="admin">Admins</option>
+            </select>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Rating</th><th>Jobs</th><th>Joined</th><th>Action</th></tr></thead>
+              <tbody id="users-body"><tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-soft)">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- JOBS -->
+      <div class="section" id="sec-jobs">
+        <div class="page-head">
+          <div><div class="page-title">Jobs</div><div class="page-sub">All job listings on the platform</div></div>
+        </div>
+        <div class="card">
+          <div class="toolbar">
+            <div class="search"><span class="si">🔍</span><input type="text" placeholder="Search jobs..." oninput="searchJobs(this.value)"/></div>
+            <select class="fil" onchange="catFilter(this.value)">
+              <option value="all">All Categories</option>
+              <option value="development">Development</option>
+              <option value="design">Design</option>
+              <option value="writing">Writing</option>
+              <option value="marketing">Marketing</option>
+              <option value="video">Video</option>
+            </select>
+            <select class="fil" onchange="statusFilter(this.value)">
+              <option value="all">All Status</option>
+              <option value="open">Open</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Title</th><th>Client</th><th>Category</th><th>Budget</th><th>Proposals</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody id="jobs-body"><tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-soft)">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- INVOICES -->
+      <div class="section" id="sec-invoices">
+        <div class="page-head">
+          <div><div class="page-title">Invoices</div><div class="page-sub">All platform invoices</div></div>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Invoice #</th><th>Freelancer</th><th>Client</th><th>Amount</th><th>Due Date</th><th>Status</th></tr></thead>
+              <tbody id="inv-body"><tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-soft)">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="section" id="sec-settings">
+        <div class="page-head"><div><div class="page-title">Settings</div><div class="page-sub">Admin configuration</div></div></div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Change Admin Password</div>
+            <div style="margin-bottom:12px"><label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Current Password</label><input id="cur-p" type="password" style="width:100%;background:var(--cream);border:2px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none" placeholder="Current password"></div>
+            <div style="margin-bottom:16px"><label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">New Password</label><input id="new-p" type="password" style="width:100%;background:var(--cream);border:2px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none" placeholder="New password (min 6 chars)"></div>
+            <button class="btn btn-p" onclick="changePass()">Save Password</button>
+          </div>
+          <div class="card">
+            <div class="card-title">Platform Status</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;padding:10px;background:var(--cream-deep);border-radius:8px"><span style="color:var(--text-soft);font-size:13px">Backend API</span><span id="api-status" style="font-size:13px;font-weight:600;color:var(--pista-deep)">Checking...</span></div>
+              <div style="display:flex;justify-content:space-between;padding:10px;background:var(--cream-deep);border-radius:8px"><span style="color:var(--text-soft);font-size:13px">API URL</span><span style="font-size:12px;color:var(--text-mid)">localhost:5000</span></div>
+              <div style="display:flex;justify-content:space-between;padding:10px;background:var(--cream-deep);border-radius:8px"><span style="color:var(--text-soft);font-size:13px">Admin Version</span><span style="font-size:13px;color:var(--text-mid)">v1.0.0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /layout -->
+</div><!-- /app -->
+
+<!-- CONFIRM MODAL -->
+<div class="m-overlay" id="conf-modal">
+  <div class="m-box">
+    <h3 id="conf-title">Confirm</h3>
+    <p id="conf-body">Are you sure?</p>
+    <div class="m-actions">
+      <button class="btn btn-o" onclick="closeConf()">Cancel</button>
+      <button class="btn btn-r" id="conf-ok">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"><span id="t-icon">✅</span><span id="t-msg">Done!</span></div>
+
+<script>
+// ═══════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════
+const API_URL = 'http://localhost:5000/api';
+let ADMIN_PASS = localStorage.getItem('lh_admin_pw') || 'lancerhub2026';
+let JWT = '';
+
+// Data
+let USERS = [], JOBS = [], INVOICES = [];
+
+// ═══════════════════════════════════════════
+//  LOGIN  —  Simple password check, no backend needed
+// ═══════════════════════════════════════════
+function doLogin() {
+  const user = document.getElementById('inp-user').value.trim();
+  const pass = document.getElementById('inp-pass').value.trim();
+  const errEl = document.getElementById('login-error');
+
+  if (user === 'admin' && pass === ADMIN_PASS) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadAll();
+    checkHealth();
+    return;
+  }
+
+  errEl.textContent = '❌ Wrong credentials! Use: admin / lancerhub2026';
+}
+
+// Allow pressing Enter to login
+document.getElementById('inp-pass').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('inp-user').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+
+function doLogout() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('inp-pass').value = '';
+  document.getElementById('login-error').textContent = '';
+}
+
+// ═══════════════════════════════════════════
+//  API HELPER
+// ═══════════════════════════════════════════
+async function apiFetch(path, opts = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (JWT) headers['Authorization'] = 'Bearer ' + JWT;
+  const res = await fetch(API_URL + path, { ...opts, headers });
+  return res.json();
+}
+
+// ═══════════════════════════════════════════
+//  LOAD ALL DATA
+// ═══════════════════════════════════════════
+async function loadAll() {
+  try {
+    const [u, j, inv] = await Promise.all([
+      apiFetch('/users?limit=200'),
+      apiFetch('/jobs?limit=200'),
+      apiFetch('/invoices?limit=200'),
+    ]);
+    USERS    = u.freelancers || [];
+    JOBS     = j.jobs        || [];
+    INVOICES = inv.invoices  || [];
+    updateStats();
+    renderDashUsers();
+    renderDashJobs();
+    renderUsers(USERS);
+    renderJobs(JOBS);
+    renderInvoices(INVOICES);
+    toast('✅', 'Data loaded!');
+  } catch(e) {
+    toast('⚠️', 'Backend not connected — showing empty data');
+  }
+}
+
+// ═══════════════════════════════════════════
+//  STATS
+// ═══════════════════════════════════════════
+function updateStats() {
+  document.getElementById('st-users').textContent = USERS.length || 0;
+  document.getElementById('st-jobs').textContent  = JOBS.length  || 0;
+  document.getElementById('st-inv').textContent   = INVOICES.length || 0;
+  const paid = INVOICES.filter(i => i.status === 'paid').length;
+  document.getElementById('st-inv-sub').textContent = paid + ' paid';
+  const props = JOBS.reduce((s, j) => s + (j.proposalCount || 0), 0);
+  document.getElementById('st-prop').textContent = props || 0;
+}
+
+// ═══════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════
+function renderDashUsers() {
+  const el = document.getElementById('dash-users');
+  if (!USERS.length) { el.innerHTML = '<p style="color:var(--text-soft);font-size:13px">No users yet. Run npm run seed first.</p>'; return; }
+  el.innerHTML = USERS.slice(0, 5).map(u => `
+    <div class="act-item">
+      <div class="act-dot" style="background:var(--pista-dark)"></div>
+      <div>
+        <div class="act-text">${u.name} <span class="badge b-${u.role==='client'?'sky':u.role==='admin'?'red':'green'}">${u.role}</span></div>
+        <div class="act-time">${u.location || 'No location'} · ${u.skills ? u.skills.slice(0,2).join(', ') : 'No skills'}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderDashJobs() {
+  const el = document.getElementById('dash-jobs');
+  if (!JOBS.length) { el.innerHTML = '<p style="color:var(--text-soft);font-size:13px">No jobs yet. Run npm run seed first.</p>'; return; }
+  el.innerHTML = JOBS.slice(0, 5).map(j => `
+    <div class="act-item">
+      <div class="act-dot" style="background:var(--sky-dark)"></div>
+      <div>
+        <div class="act-text">${j.title.length > 45 ? j.title.slice(0,45)+'...' : j.title}</div>
+        <div class="act-time">$${j.budgetMin}${j.budgetMax ? '–$'+j.budgetMax : ''} · ${j.proposalCount || 0} proposals</div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+//  USERS TABLE
+// ═══════════════════════════════════════════
+function renderUsers(list) {
+  const body = document.getElementById('users-body');
+  if (!list.length) {
+    body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-soft)">No users found</td></tr>';
+    return;
+  }
+  body.innerHTML = list.map(u => `
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:9px">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--pista-dark),var(--sky-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">
+            ${u.name.charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <div style="font-weight:600;color:var(--brown)">${u.name}</div>
+            <div style="font-size:11px;color:var(--text-soft)">${u.title || '—'}</div>
+          </div>
+        </div>
+      </td>
+      <td style="color:var(--text-mid);font-size:12px">${u.email || '—'}</td>
+      <td><span class="badge b-${u.role==='client'?'sky':u.role==='admin'?'red':'green'}">${u.role}</span></td>
+      <td>${u.avgRating ? '★ ' + u.avgRating.toFixed(1) : '—'}</td>
+      <td>${u.jobsCompleted || 0}</td>
+      <td style="color:var(--text-soft);font-size:12px">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-IN') : '—'}</td>
+      <td>
+        <button class="btn btn-r" onclick="confirmDel('user','${u._id}','${u.name.replace(/'/g,'')}')">🗑 Delete</button>
+      </td>
+    </tr>`).join('');
+}
+
+function searchUsers(q) {
+  renderUsers(USERS.filter(u => u.name.toLowerCase().includes(q.toLowerCase()) || (u.email||'').toLowerCase().includes(q.toLowerCase())));
+}
+function roleFilter(r) {
+  renderUsers(r === 'all' ? USERS : USERS.filter(u => u.role === r));
+}
+
+// ═══════════════════════════════════════════
+//  JOBS TABLE
+// ═══════════════════════════════════════════
+const catIcon = { development:'💻', design:'🎨', writing:'✍️', marketing:'📢', video:'🎬', data:'📊', other:'📌' };
+
+function renderJobs(list) {
+  const body = document.getElementById('jobs-body');
+  if (!list.length) {
+    body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-soft)">No jobs found</td></tr>';
+    return;
+  }
+  body.innerHTML = list.map(j => `
+    <tr>
+      <td>
+        <div style="font-weight:600;color:var(--brown);max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${j.title}</div>
+        <div style="font-size:11px;color:var(--text-soft)">${(j.skills||[]).slice(0,2).join(', ')}</div>
+      </td>
+      <td style="color:var(--text-mid)">${j.client?.name || '—'}</td>
+      <td>${catIcon[j.category]||'📌'} ${j.category}</td>
+      <td style="font-weight:700;color:var(--pista-deep)">$${j.budgetMin}${j.budgetMax?'–$'+j.budgetMax:''}</td>
+      <td>${j.proposalCount || 0}</td>
+      <td><span class="badge b-${j.status==='open'?'green':j.status==='in_progress'?'sky':j.status==='completed'?'gray':'red'}">${j.status}</span></td>
+      <td>
+        <button class="btn btn-r" onclick="confirmDel('job','${j._id}','${j.title.replace(/'/g,'').slice(0,20)}')">🗑 Delete</button>
+      </td>
+    </tr>`).join('');
+}
+
+function searchJobs(q) {
+  renderJobs(JOBS.filter(j => j.title.toLowerCase().includes(q.toLowerCase())));
+}
+function catFilter(c) {
+  renderJobs(c === 'all' ? JOBS : JOBS.filter(j => j.category === c));
+}
+function statusFilter(s) {
+  renderJobs(s === 'all' ? JOBS : JOBS.filter(j => j.status === s));
+}
+
+// ═══════════════════════════════════════════
+//  INVOICES TABLE
+// ═══════════════════════════════════════════
+function renderInvoices(list) {
+  const body = document.getElementById('inv-body');
+  if (!list.length) {
+    body.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-soft)">No invoices found</td></tr>';
+    return;
+  }
+  body.innerHTML = list.map(inv => `
+    <tr>
+      <td style="font-weight:700;color:var(--brown)">${inv.invoiceNumber || '—'}</td>
+      <td>${inv.freelancer?.name || '—'}</td>
+      <td>${inv.client?.name || '—'}</td>
+      <td style="font-weight:700;color:var(--pista-deep)">$${inv.totalAmount?.toFixed(2) || '0.00'}</td>
+      <td style="color:var(--text-soft)">${inv.dueDate ? new Date(inv.dueDate).toLocaleDateString('en-IN') : '—'}</td>
+      <td><span class="badge b-${inv.status==='paid'?'green':inv.status==='pending'?'peach':'red'}">${inv.status}</span></td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════════
+//  CONFIRM DELETE
+// ═══════════════════════════════════════════
+let pendingType = '', pendingId = '';
+
+function confirmDel(type, id, name) {
+  pendingType = type; pendingId = id;
+  document.getElementById('conf-title').textContent = 'Delete ' + (type === 'user' ? 'User' : 'Job');
+  document.getElementById('conf-body').textContent  = 'Delete "' + name + '"? This cannot be undone.';
+  document.getElementById('conf-modal').classList.add('open');
+  document.getElementById('conf-ok').onclick = doDelete;
+}
+
+async function doDelete() {
+  try {
+    const path = pendingType === 'user' ? '/users/' + pendingId : '/jobs/' + pendingId;
+    await apiFetch(path, { method: 'DELETE' });
+    if (pendingType === 'user') { USERS = USERS.filter(u => u._id !== pendingId); renderUsers(USERS); }
+    else { JOBS = JOBS.filter(j => j._id !== pendingId); renderJobs(JOBS); }
+    updateStats();
+    toast('🗑', 'Deleted successfully');
+  } catch { toast('❌', 'Delete failed'); }
+  closeConf();
+}
+
+function closeConf() {
+  document.getElementById('conf-modal').classList.remove('open');
+  pendingType = ''; pendingId = '';
+}
+
+document.getElementById('conf-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('conf-modal')) closeConf();
+});
+
+// ═══════════════════════════════════════════
+//  SETTINGS
+// ═══════════════════════════════════════════
+function changePass() {
+  const cur = document.getElementById('cur-p').value;
+  const nw  = document.getElementById('new-p').value;
+  if (cur !== ADMIN_PASS) { toast('❌', 'Current password is wrong'); return; }
+  if (nw.length < 6)      { toast('⚠️', 'Password must be 6+ characters'); return; }
+  ADMIN_PASS = nw;
+  localStorage.setItem('lh_admin_pw', nw);
+  document.getElementById('cur-p').value = '';
+  document.getElementById('new-p').value = '';
+  toast('✅', 'Password updated!');
+}
+
+async function checkHealth() {
+  try {
+    const d = await apiFetch('/health');
+    document.getElementById('api-status').textContent = d.status === 'OK' ? '● Running' : '● Error';
+    document.getElementById('api-status').style.color = d.status === 'OK' ? 'var(--pista-deep)' : 'var(--coral)';
+  } catch {
+    document.getElementById('api-status').textContent = '● Offline';
+    document.getElementById('api-status').style.color = 'var(--coral)';
+  }
+}
+
+// ═══════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════
+function goTo(name, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+  document.getElementById('sec-' + name).classList.add('active');
+  if (el) el.classList.add('active');
+  if (name === 'settings') checkHealth();
+}
+
+// ═══════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════
+let tt;
+function toast(icon, msg) {
+  document.getElementById('t-icon').textContent = icon;
+  document.getElementById('t-msg').textContent  = msg;
+  const el = document.getElementById('toast');
+  el.classList.add('show');
+  clearTimeout(tt);
+  tt = setTimeout(() => el.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

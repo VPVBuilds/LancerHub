@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LancerHub — Freelance Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream:       #fdf8f0;
+    --cream-deep:  #f5edd8;
+    --cream-card:  #fffdf7;
+    --pista:       #a8c5a0;
+    --pista-light: #d4e8d0;
+    --pista-dark:  #6b9e62;
+    --pista-deep:  #3d7535;
+    --sky:         #7ec8e3;
+    --sky-light:   #ceedf8;
+    --sky-dark:    #3a9bbf;
+    --sky-deep:    #1a6f8f;
+    --peach:       #e8a87c;
+    --peach-light: #f5d5bc;
+    --coral:       #d9614c;
+    --brown:       #3d2b1a;
+    --brown-mid:   #7a5540;
+    --text:        #2d2016;
+    --text-mid:    #6b5040;
+    --text-soft:   #9c8070;
+    --border:      #e0d0b8;
+    --border-light:#ede4d4;
+    --shadow-sm:   0 2px 8px rgba(93,61,30,.08);
+    --shadow-md:   0 6px 24px rgba(93,61,30,.12);
+    --shadow-lg:   0 16px 48px rgba(93,61,30,.16);
+    --radius:      16px;
+    --font-head:   'Playfair Display', serif;
+    --font-body:   'Plus Jakarta Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--text); font-family: var(--font-body); font-size: 15px; min-height: 100vh; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--cream-deep); } ::-webkit-scrollbar-thumb { background: var(--pista); border-radius: 99px; }
+
+  .hidden { display: none !important; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: .4px; text-transform: uppercase; }
+  .badge-pista { background: var(--pista-light); color: var(--pista-deep); border: 1.5px solid var(--pista); }
+  .badge-sky   { background: var(--sky-light);   color: var(--sky-deep);   border: 1.5px solid var(--sky); }
+  .badge-peach { background: var(--peach-light); color: var(--coral);      border: 1.5px solid var(--peach); }
+  .badge-cream { background: var(--cream-deep);  color: var(--brown-mid);  border: 1.5px solid var(--border); }
+
+  .btn { cursor: pointer; border: none; outline: none; font-family: var(--font-body); font-size: 14px; font-weight: 600; border-radius: 12px; padding: 10px 22px; transition: all .2s ease; display: inline-flex; align-items: center; gap: 7px; }
+  .btn-pista  { background: var(--pista-dark); color: #fff; }
+  .btn-pista:hover  { background: var(--pista-deep); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(107,158,98,.35); }
+  .btn-sky    { background: var(--sky-dark); color: #fff; }
+  .btn-sky:hover    { background: var(--sky-deep); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(58,155,191,.35); }
+  .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text-mid); }
+  .btn-outline:hover { border-color: var(--pista-dark); color: var(--pista-deep); background: var(--pista-light); }
+  .btn-ghost { background: transparent; color: var(--text-soft); }
+  .btn-ghost:hover { color: var(--text); background: var(--cream-deep); }
+
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(253,248,240,.92); backdrop-filter: blur(20px); border-bottom: 1.5px solid var(--border-light); padding: 0 40px; height: 68px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); }
+  .nav-logo { font-family: var(--font-head); font-size: 24px; font-weight: 800; color: var(--brown); }
+  .nav-logo span { color: var(--pista-dark); }
+  .nav-links { display: flex; gap: 2px; }
+  .nav-link { cursor: pointer; padding: 8px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; color: var(--text-soft); transition: all .15s; }
+  .nav-link:hover { color: var(--text); background: var(--cream-deep); }
+  .nav-link.active { color: var(--pista-deep); background: var(--pista-light); font-weight: 600; }
+  .nav-right { display: flex; gap: 10px; align-items: center; }
+  #notif-bell { position: relative; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: var(--cream-deep); color: var(--text-mid); border: 1.5px solid var(--border); font-size: 17px; transition: .2s; }
+  #notif-bell:hover { background: var(--pista-light); border-color: var(--pista); }
+  #notif-dot { position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; background: var(--coral); border-radius: 50%; border: 2px solid var(--cream); }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--pista-dark), var(--sky-dark)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #fff; cursor: pointer; border: 2.5px solid var(--border); flex-shrink: 0; transition: .2s; }
+  .avatar:hover { border-color: var(--pista); transform: scale(1.05); }
+
+  .page { display: none; } .page.active { display: block; }
+
+  .hero { padding: 80px 56px 72px; background: radial-gradient(ellipse 60% 50% at 15% 80%, rgba(168,197,160,.25) 0%, transparent 55%), radial-gradient(ellipse 50% 60% at 85% 20%, rgba(126,200,227,.2) 0%, transparent 55%), radial-gradient(ellipse 70% 70% at 50% 50%, rgba(232,168,124,.08) 0%, transparent 70%), var(--cream); position: relative; overflow: hidden; text-align: center; }
+  .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, var(--pista) 1px, transparent 1px), radial-gradient(circle, var(--sky) 1px, transparent 1px); background-size: 48px 48px, 72px 72px; background-position: 0 0, 24px 24px; opacity: .12; pointer-events: none; }
+  .blob { position: absolute; border-radius: 50%; pointer-events: none; opacity: .18; animation: blobFloat 8s ease-in-out infinite; }
+  .blob-1 { width: 320px; height: 320px; background: var(--pista); top: -80px; left: -60px; }
+  .blob-2 { width: 220px; height: 220px; background: var(--sky); bottom: -60px; right: 10%; animation-delay: 3s; }
+  .blob-3 { width: 160px; height: 160px; background: var(--peach); top: 20%; right: 5%; animation-delay: 1.5s; }
+  @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(16px,-16px) scale(1.05)} }
+  .hero-label { margin-bottom: 24px; position: relative; }
+  .hero h1 { font-family: var(--font-head); font-size: clamp(38px, 6vw, 76px); font-weight: 800; line-height: 1.05; color: var(--brown); margin-bottom: 22px; position: relative; }
+  .hero h1 em { color: var(--pista-dark); font-style: italic; }
+  .hero h1 u { text-decoration: none; color: var(--sky-dark); border-bottom: 4px solid var(--sky); }
+  .hero p { font-size: 18px; color: var(--text-mid); max-width: 540px; margin: 0 auto 38px; line-height: 1.65; position: relative; }
+  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 64px; position: relative; }
+  .hero-actions .btn { font-size: 15px; padding: 14px 30px; border-radius: 14px; }
+  .stats-row { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; padding-top: 44px; border-top: 2px solid var(--border-light); position: relative; }
+  .stat-item .num { font-family: var(--font-head); font-size: 34px; font-weight: 800; color: var(--brown); }
+  .stat-item .num span { color: var(--pista-dark); }
+  .stat-item .lbl { font-size: 13px; color: var(--text-soft); margin-top: 4px; }
+
+  .section { padding: 56px 48px; }
+  .section-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 14px; }
+  .section-title { font-family: var(--font-head); font-size: 28px; font-weight: 700; color: var(--brown); }
+  .section-sub { color: var(--text-soft); font-size: 14px; margin-top: 5px; }
+
+  .cats { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+  .cat-chip { cursor: pointer; padding: 9px 20px; border-radius: 99px; background: var(--cream-card); border: 2px solid var(--border); font-size: 13px; font-weight: 500; color: var(--text-soft); transition: all .15s; }
+  .cat-chip:hover, .cat-chip.active { border-color: var(--pista-dark); color: var(--pista-deep); background: var(--pista-light); font-weight: 600; }
+
+  .jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; }
+  .job-card { background: var(--cream-card); border: 2px solid var(--border-light); border-radius: var(--radius); padding: 24px; cursor: pointer; transition: all .22s; position: relative; overflow: hidden; }
+  .job-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pista-dark), var(--sky-dark)); transform: scaleX(0); transform-origin: left; transition: transform .28s; }
+  .job-card:hover { border-color: var(--pista); transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .job-card:hover::before { transform: scaleX(1); }
+  .job-logo { width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; background: var(--cream-deep); border: 1.5px solid var(--border); }
+  .job-card h3 { font-family: var(--font-head); font-size: 16px; font-weight: 700; color: var(--brown); line-height: 1.3; margin-bottom: 4px; }
+  .job-company { font-size: 13px; color: var(--text-soft); }
+  .job-desc { font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .job-budget { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--pista-deep); }
+  .fl-tag { background: var(--cream-deep); border: 1.5px solid var(--border); border-radius: 8px; padding: 3px 10px; font-size: 11px; color: var(--text-mid); font-weight: 500; }
+
+  .freelancers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+  .fl-card { background: var(--cream-card); border: 2px solid var(--border-light); border-radius: var(--radius); padding: 28px 22px; text-align: center; cursor: pointer; transition: all .22s; position: relative; overflow: hidden; }
+  .fl-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--sky-dark), var(--pista-dark)); transform: scaleX(0); transition: transform .28s; }
+  .fl-card:hover { border-color: var(--sky); transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .fl-card:hover::after { transform: scaleX(1); }
+  .fl-avatar { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 800; color: #fff; margin: 0 auto 16px; border: 3px solid var(--border); box-shadow: 0 4px 14px rgba(0,0,0,.1); }
+  .fl-name { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--brown); margin-bottom: 4px; }
+  .fl-role { font-size: 13px; color: var(--text-soft); margin-bottom: 12px; }
+  .fl-stars { color: var(--peach); font-size: 13px; margin-bottom: 12px; }
+  .fl-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 16px; }
+  .fl-rate { font-family: var(--font-head); font-size: 20px; font-weight: 800; color: var(--sky-deep); }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(61,43,26,.45); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity .25s; }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal { background: var(--cream-card); border: 2px solid var(--border); border-radius: 22px; padding: 36px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; transform: scale(.96) translateY(12px); transition: transform .28s cubic-bezier(.34,1.4,.64,1); position: relative; box-shadow: var(--shadow-lg); }
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+  .modal-close { position: absolute; top: 18px; right: 18px; cursor: pointer; width: 34px; height: 34px; border-radius: 10px; background: var(--cream-deep); display: flex; align-items: center; justify-content: center; color: var(--text-soft); font-size: 18px; border: 1.5px solid var(--border); outline: none; transition: .15s; }
+  .modal-close:hover { background: var(--peach-light); color: var(--coral); border-color: var(--peach); }
+  .modal h2 { font-family: var(--font-head); font-size: 24px; font-weight: 700; color: var(--brown); margin-bottom: 6px; }
+  .modal p.sub { color: var(--text-soft); font-size: 14px; margin-bottom: 26px; }
+
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-mid); margin-bottom: 7px; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; background: var(--cream); border: 2px solid var(--border); border-radius: 12px; padding: 11px 14px; color: var(--text); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color .15s; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--pista-dark); background: var(--cream-card); box-shadow: 0 0 0 3px rgba(168,197,160,.2); }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+  .tabs { display: flex; gap: 4px; background: var(--cream-deep); border-radius: 14px; padding: 4px; margin-bottom: 24px; border: 1.5px solid var(--border); }
+  .tab { flex: 1; text-align: center; padding: 9px 14px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--text-soft); transition: all .15s; }
+  .tab.active { background: var(--cream-card); color: var(--pista-deep); font-weight: 600; box-shadow: var(--shadow-sm); }
+
+  #page-messages .msg-layout { display: grid; grid-template-columns: 300px 1fr; height: calc(100vh - 68px); overflow: hidden; }
+  .msg-sidebar { border-right: 2px solid var(--border-light); overflow-y: auto; background: var(--cream-card); }
+  .msg-sidebar-head { padding: 22px 20px 16px; border-bottom: 1.5px solid var(--border-light); }
+  .msg-sidebar-head h3 { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: var(--brown); }
+  .msg-search { margin-top: 12px; position: relative; }
+  .msg-search input { width: 100%; background: var(--cream); border: 2px solid var(--border); border-radius: 10px; padding: 9px 12px 9px 36px; color: var(--text); font-family: var(--font-body); font-size: 13px; outline: none; }
+  .msg-search input:focus { border-color: var(--pista-dark); }
+  .msg-search .icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-soft); }
+  .conv-item { display: flex; gap: 12px; padding: 15px 20px; cursor: pointer; border-bottom: 1.5px solid var(--border-light); transition: background .15s; align-items: flex-start; }
+  .conv-item:hover { background: var(--cream-deep); }
+  .conv-item.active { background: var(--pista-light); border-left: 3px solid var(--pista-dark); }
+  .conv-name { font-weight: 600; font-size: 14px; color: var(--brown); margin-bottom: 3px; }
+  .conv-preview { font-size: 12px; color: var(--text-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conv-time { font-size: 11px; color: var(--text-soft); }
+  .conv-unread { width: 20px; height: 20px; border-radius: 50%; background: var(--pista-dark); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .chat-area { display: flex; flex-direction: column; background: var(--cream); }
+  .chat-head { padding: 18px 28px; border-bottom: 2px solid var(--border-light); display: flex; align-items: center; gap: 14px; background: var(--cream-card); box-shadow: var(--shadow-sm); }
+  .chat-head-info h4 { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--brown); }
+  .chat-head-info p { font-size: 12px; color: var(--pista-dark); font-weight: 500; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 28px; display: flex; flex-direction: column; gap: 16px; }
+  .msg-bubble { max-width: 62%; }
+  .msg-bubble.sent { align-self: flex-end; }
+  .msg-bubble.recv { align-self: flex-start; }
+  .bubble-text { padding: 12px 18px; border-radius: 18px; font-size: 14px; line-height: 1.55; }
+  .msg-bubble.sent .bubble-text { background: var(--pista-dark); color: #fff; border-bottom-right-radius: 5px; box-shadow: 0 3px 10px rgba(107,158,98,.25); }
+  .msg-bubble.recv .bubble-text { background: var(--cream-card); color: var(--text); border-bottom-left-radius: 5px; border: 2px solid var(--border); }
+  .bubble-time { font-size: 11px; color: var(--text-soft); margin-top: 5px; text-align: right; }
+  .msg-bubble.recv .bubble-time { text-align: left; }
+  .chat-input-row { padding: 18px 28px; border-top: 2px solid var(--border-light); display: flex; gap: 12px; align-items: flex-end; background: var(--cream-card); }
+  .chat-input-row textarea { flex: 1; background: var(--cream); border: 2px solid var(--border); border-radius: 14px; padding: 12px 16px; color: var(--text); font-family: var(--font-body); font-size: 14px; outline: none; resize: none; max-height: 120px; min-height: 46px; transition: border-color .15s; }
+  .chat-input-row textarea:focus { border-color: var(--pista-dark); box-shadow: 0 0 0 3px rgba(168,197,160,.2); }
+  .send-btn { width: 46px; height: 46px; border-radius: 14px; background: var(--pista-dark); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; transition: all .2s; flex-shrink: 0; box-shadow: 0 4px 14px rgba(107,158,98,.3); }
+  .send-btn:hover { background: var(--pista-deep); transform: scale(1.05); }
+
+  .dash-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 32px; }
+  .dash-stat { background: var(--cream-card); border: 2px solid var(--border-light); border-radius: var(--radius); padding: 24px; }
+  .ds-icon { font-size: 24px; margin-bottom: 10px; }
+  .ds-label { font-size: 12px; color: var(--text-soft); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; font-weight: 600; }
+  .ds-num { font-family: var(--font-head); font-size: 32px; font-weight: 800; color: var(--brown); margin-bottom: 6px; }
+  .ds-change { font-size: 12px; font-weight: 500; }
+  .ds-up { color: var(--pista-deep); } .ds-down { color: var(--coral); }
+  .invoices-table { width: 100%; border-collapse: collapse; }
+  .invoices-table th { text-align: left; padding: 13px 16px; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-soft); border-bottom: 2px solid var(--border); font-weight: 600; }
+  .invoices-table td { padding: 15px 16px; font-size: 14px; border-bottom: 1.5px solid var(--border-light); vertical-align: middle; }
+  .invoices-table tr:hover td { background: var(--cream-deep); }
+  .invoice-status { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 13px; }
+  .invoice-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; }
+  .status-paid::before { background: var(--pista-dark); } .status-pending::before { background: var(--peach); } .status-overdue::before { background: var(--coral); }
+  .status-paid { color: var(--pista-deep); } .status-pending { color: var(--brown-mid); } .status-overdue { color: var(--coral); }
+  .progress-bar { height: 8px; border-radius: 99px; background: var(--cream-deep); overflow: hidden; margin-top: 8px; border: 1px solid var(--border); }
+  .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--pista-dark), var(--sky-dark)); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .panel { background: var(--cream-card); border: 2px solid var(--border-light); border-radius: var(--radius); padding: 26px; }
+  .panel h4 { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--brown); margin-bottom: 20px; }
+  .activity-item { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
+  .act-dot { width: 9px; height: 9px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .act-text { font-size: 13px; color: var(--text); line-height: 1.45; }
+  .act-text span { color: var(--text-soft); font-size: 11px; display: block; margin-top: 2px; }
+
+  #toast { position: fixed; bottom: 30px; right: 30px; z-index: 999; background: var(--cream-card); border: 2px solid var(--border); border-left: 4px solid var(--pista-dark); border-radius: 14px; padding: 14px 20px; font-size: 14px; color: var(--text); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; transform: translateY(80px); opacity: 0; transition: all .35s cubic-bezier(.34,1.56,.64,1); max-width: 320px; font-weight: 500; }
+  #toast.show { transform: translateY(0); opacity: 1; }
+
+  .profile-hero { padding: 48px 56px; background: radial-gradient(ellipse 70% 80% at 0% 50%, rgba(168,197,160,.2) 0%, transparent 55%), radial-gradient(ellipse 50% 60% at 100% 30%, rgba(126,200,227,.15) 0%, transparent 55%), var(--cream-deep); border-bottom: 2px solid var(--border); }
+  .profile-top { display: flex; gap: 28px; align-items: flex-start; }
+  .profile-av { width: 96px; height: 96px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 800; flex-shrink: 0; color: #fff; border: 4px solid var(--cream-card); box-shadow: var(--shadow-md); }
+  .profile-stats-row { display: flex; gap: 36px; margin-top: 28px; flex-wrap: wrap; }
+  .profile-stat .num { font-family: var(--font-head); font-size: 26px; font-weight: 800; color: var(--brown); }
+  .profile-stat .lbl { font-size: 12px; color: var(--text-soft); margin-top: 2px; }
+  .divider { height: 2px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-up { animation: fadeUp .4s ease forwards; }
+
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+  .cat-card { background: var(--cream-card); border: 2px solid var(--border-light); border-radius: var(--radius); padding: 26px 18px; text-align: center; cursor: pointer; transition: all .2s; }
+  .cat-card:hover { border-color: var(--pista); transform: translateY(-3px); box-shadow: var(--shadow-md); background: var(--pista-light); }
+
+  @media(max-width:900px){nav{padding:0 18px;}.hero{padding:50px 22px 42px;}.section{padding:36px 20px;}.dash-grid{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}#page-messages .msg-layout{grid-template-columns:1fr;}.chat-area{display:none;}.form-row{grid-template-columns:1fr;}.profile-top{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Lancer<span>Hub</span></div>
+  <div class="nav-links">
+    <div class="nav-link active" onclick="showPage('home',this)">Home</div>
+    <div class="nav-link" onclick="showPage('jobs',this)">Find Jobs</div>
+    <div class="nav-link" onclick="showPage('freelancers',this)">Freelancers</div>
+    <div class="nav-link" onclick="showPage('messages',this)">Messages</div>
+    <div class="nav-link" onclick="showPage('dashboard',this)">Dashboard</div>
+  </div>
+  <div class="nav-right">
+    <div id="notif-bell" onclick="showToast('🔔','You have 3 new notifications!')">🔔<div id="notif-dot"></div></div>
+    <button class="btn btn-outline" onclick="openModal('modal-login')">Sign In</button>
+    <button class="btn btn-pista" onclick="openModal('modal-register')">Join Free ✦</button>
+    <div class="avatar" onclick="showPage('profile',document.querySelector('.nav-link'))">AK</div>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div>
+    <div class="hero-label"><span class="badge badge-pista">✦ Trusted by 50,000+ professionals</span></div>
+    <h1>The marketplace for<br><em>exceptional</em> <u>freelance</u> talent</h1>
+    <p>Connect with top-rated freelancers across design, development, writing, and marketing. Start today — it's free.</p>
+    <div class="hero-actions">
+      <button class="btn btn-pista" onclick="showPage('jobs',null)">🔍 Browse Jobs</button>
+      <button class="btn btn-sky" onclick="openModal('modal-post-job')">+ Post a Job</button>
+      <button class="btn btn-ghost" onclick="showPage('freelancers',null)">Explore Talent →</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-item"><div class="num">12<span>K+</span></div><div class="lbl">Active Freelancers</div></div>
+      <div class="stat-item"><div class="num">50<span>K+</span></div><div class="lbl">Projects Done</div></div>
+      <div class="stat-item"><div class="num">$8<span>M+</span></div><div class="lbl">Paid Out</div></div>
+      <div class="stat-item"><div class="num">4.9<span>★</span></div><div class="lbl">Avg Rating</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div><div class="section-title">Browse Categories</div><div class="section-sub">Thousands of jobs across every specialty</div></div>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card" onclick="showPage('jobs',null)"><div style="font-size:34px;margin-bottom:10px">💻</div><div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--brown);margin-bottom:4px">Development</div><div style="font-size:12px;color:var(--text-soft)">2,340 jobs</div></div>
+      <div class="cat-card" onclick="showPage('jobs',null)"><div style="font-size:34px;margin-bottom:10px">🎨</div><div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--brown);margin-bottom:4px">Design</div><div style="font-size:12px;color:var(--text-soft)">1,890 jobs</div></div>
+      <div class="cat-card" onclick="showPage('jobs',null)"><div style="font-size:34px;margin-bottom:10px">✍️</div><div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--brown);margin-bottom:4px">Writing</div><div style="font-size:12px;color:var(--text-soft)">1,240 jobs</div></div>
+      <div class="cat-card" onclick="showPage('jobs',null)"><div style="font-size:34px;margin-bottom:10px">📢</div><div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--brown);margin-bottom:4px">Marketing</div><div style="font-size:12px;color:var(--text-soft)">980 jobs</div></div>
+      <div class="cat-card" onclick="showPage('jobs',null)"><div style="font-size:34px;margin-bottom:10px">🎬</div><div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--brown);margin-bottom:4px">Video</div><div style="font-size:12px;color:var(--text-soft)">620 jobs</div></div>
+      <div class="cat-card" onclick="showPage('jobs',null)"><div style="font-size:34px;margin-bottom:10px">📊</div><div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--brown);margin-bottom:4px">Data & AI</div><div style="font-size:12px;color:var(--text-soft)">530 jobs</div></div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="section" style="background:var(--cream-deep)">
+    <div style="text-align:center;margin-bottom:40px"><div class="section-title">How LancerHub Works</div><div class="section-sub" style="margin-top:8px">Three steps to get started</div></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;max-width:800px;margin:0 auto">
+      <div style="text-align:center;padding:30px 22px;background:var(--cream-card);border-radius:var(--radius);border:2px solid var(--border-light)">
+        <div style="width:58px;height:58px;border-radius:50%;background:var(--pista-light);border:2px solid var(--pista);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px">📝</div>
+        <div style="font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--brown);margin-bottom:8px">Post a Job</div>
+        <div style="font-size:13px;color:var(--text-soft);line-height:1.6">Describe your project and set your budget in under 5 minutes.</div>
+      </div>
+      <div style="text-align:center;padding:30px 22px;background:var(--cream-card);border-radius:var(--radius);border:2px solid var(--border-light)">
+        <div style="width:58px;height:58px;border-radius:50%;background:var(--sky-light);border:2px solid var(--sky);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px">🤝</div>
+        <div style="font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--brown);margin-bottom:8px">Choose Talent</div>
+        <div style="font-size:13px;color:var(--text-soft);line-height:1.6">Review proposals from verified freelancers and pick the best fit.</div>
+      </div>
+      <div style="text-align:center;padding:30px 22px;background:var(--cream-card);border-radius:var(--radius);border:2px solid var(--border-light)">
+        <div style="width:58px;height:58px;border-radius:50%;background:var(--peach-light);border:2px solid var(--peach);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px">✅</div>
+        <div style="font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--brown);margin-bottom:8px">Pay Safely</div>
+        <div style="font-size:13px;color:var(--text-soft);line-height:1.6">Funds held in escrow — released only when you approve the work.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOBS -->
+<div id="page-jobs" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div><div class="section-title">Browse Jobs</div><div class="section-sub">Find your next great project</div></div>
+      <button class="btn btn-pista" onclick="openModal('modal-post-job')">+ Post a Job</button>
+    </div>
+    <div class="cats">
+      <div class="cat-chip active" onclick="filterCat(this,'all')">All Jobs</div>
+      <div class="cat-chip" onclick="filterCat(this,'dev')">💻 Development</div>
+      <div class="cat-chip" onclick="filterCat(this,'design')">🎨 Design</div>
+      <div class="cat-chip" onclick="filterCat(this,'writing')">✍️ Writing</div>
+      <div class="cat-chip" onclick="filterCat(this,'marketing')">📢 Marketing</div>
+      <div class="cat-chip" onclick="filterCat(this,'video')">🎬 Video</div>
+    </div>
+    <div class="jobs-grid" id="jobs-list"></div>
+  </div>
+</div>
+
+<!-- FREELANCERS -->
+<div id="page-freelancers" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div><div class="section-title">Top Freelancers</div><div class="section-sub">Hire verified, rated professionals</div></div>
+    </div>
+    <div class="cats">
+      <div class="cat-chip active" onclick="filterFL(this,'all')">All</div>
+      <div class="cat-chip" onclick="filterFL(this,'dev')">💻 Developers</div>
+      <div class="cat-chip" onclick="filterFL(this,'design')">🎨 Designers</div>
+      <div class="cat-chip" onclick="filterFL(this,'writing')">✍️ Writers</div>
+      <div class="cat-chip" onclick="filterFL(this,'marketing')">📢 Marketers</div>
+    </div>
+    <div class="freelancers-grid" id="freelancers-list"></div>
+  </div>
+</div>
+
+<!-- MESSAGES -->
+<div id="page-messages" class="page">
+  <div class="msg-layout">
+    <div class="msg-sidebar">
+      <div class="msg-sidebar-head">
+        <h3>Messages</h3>
+        <div class="msg-search"><span class="icon">🔍</span><input type="text" placeholder="Search conversations..."></div>
+      </div>
+      <div id="conv-list"></div>
+    </div>
+    <div class="chat-area" id="chat-area">
+      <div class="chat-head">
+        <div class="avatar" id="chat-av" style="width:42px;height:42px;font-size:15px">?</div>
+        <div class="chat-head-info"><h4 id="chat-name">Select a conversation</h4><p id="chat-status">Online now</p></div>
+        <button class="btn btn-sky" style="margin-left:auto;font-size:13px;padding:9px 18px" onclick="openModal('modal-invoice')">💳 Invoice</button>
+      </div>
+      <div class="chat-messages" id="chat-messages"><div id="typing-indicator" style="display:none;padding:8px 16px;font-size:12px;color:var(--text-soft);font-style:italic">Typing...</div></div>
+      <div class="chat-input-row">
+        <textarea id="msg-input" placeholder="Write a message..." rows="1" onkeydown="handleMsgKey(event)" oninput="handleTyping()"></textarea>
+        <button class="send-btn" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div><div class="section-title">My Dashboard</div><div class="section-sub">Your freelance overview</div></div>
+      <button class="btn btn-sky" onclick="openModal('modal-invoice')">+ New Invoice</button>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-stat" style="border-top:3px solid var(--pista-dark)"><div class="ds-icon">💰</div><div class="ds-label">Total Earned</div><div class="ds-num">$24,800</div><div class="ds-change ds-up">↑ 18% this month</div></div>
+      <div class="dash-stat" style="border-top:3px solid var(--sky-dark)"><div class="ds-icon">🗂️</div><div class="ds-label">Active Projects</div><div class="ds-num">7</div><div class="ds-change ds-up">↑ 2 new this week</div></div>
+      <div class="dash-stat" style="border-top:3px solid var(--peach)"><div class="ds-icon">📄</div><div class="ds-label">Pending Invoices</div><div class="ds-num">$4,200</div><div class="ds-change ds-down">3 awaiting payment</div></div>
+      <div class="dash-stat" style="border-top:3px solid var(--pista)"><div class="ds-icon">👁️</div><div class="ds-label">Profile Views</div><div class="ds-num">342</div><div class="ds-change ds-up">↑ 44% this week</div></div>
+    </div>
+    <div class="two-col" style="margin-bottom:24px">
+      <div class="panel"><h4>Active Projects</h4><div id="active-projects-list"></div></div>
+      <div class="panel">
+        <h4>Recent Activity</h4>
+        <div class="activity-item"><div class="act-dot" style="background:var(--pista-dark)"></div><div class="act-text">New proposal from Alex Kim<span>2 hours ago</span></div></div>
+        <div class="activity-item"><div class="act-dot" style="background:var(--sky-dark)"></div><div class="act-text">Invoice #INV-008 viewed by NovaBrand<span>5 hours ago</span></div></div>
+        <div class="activity-item"><div class="act-dot" style="background:var(--coral)"></div><div class="act-text">Message from Sarah — "Can we jump on a call?"<span>Yesterday</span></div></div>
+        <div class="activity-item"><div class="act-dot" style="background:var(--pista-dark)"></div><div class="act-text">Payment of $1,800 received from TechCorp<span>2 days ago</span></div></div>
+        <div class="activity-item"><div class="act-dot" style="background:var(--peach)"></div><div class="act-text">Job "React Dashboard" was shortlisted<span>3 days ago</span></div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <h4 style="margin:0">Invoices</h4>
+        <button class="btn btn-pista" style="font-size:13px;padding:8px 16px" onclick="openModal('modal-invoice')">+ New Invoice</button>
+      </div>
+      <table class="invoices-table">
+        <thead><tr><th>Invoice</th><th>Client</th><th>Project</th><th>Amount</th><th>Due Date</th><th>Status</th><th></th></tr></thead>
+        <tbody id="invoices-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="page-profile" class="page">
+  <div class="profile-hero">
+    <div class="profile-top">
+      <div class="profile-av" style="background:linear-gradient(135deg,var(--pista-dark),var(--sky-dark))">AK</div>
+      <div class="profile-info" style="flex:1">
+        <h2 style="font-family:var(--font-head);font-size:30px;font-weight:800;color:var(--brown);margin-bottom:4px">Alex Kumar</h2>
+        <div style="font-size:15px;color:var(--text-mid);margin-bottom:14px">Full-Stack Developer & UI Designer · Mumbai, India</div>
+        <div><span class="badge badge-pista">✓ Verified</span><span style="margin-left:12px;color:var(--peach);font-size:14px;font-weight:600">★★★★★ 4.9 (148 reviews)</span></div>
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-pista" onclick="openModal('modal-edit-profile')">✏️ Edit Profile</button>
+          <button class="btn btn-outline" onclick="showToast('📋','Profile link copied!')">Share Profile</button>
+        </div>
+      </div>
+      <div style="text-align:right"><div style="font-family:var(--font-head);font-size:32px;font-weight:800;color:var(--sky-deep)">$65/hr</div><div style="font-size:13px;color:var(--text-soft)">Hourly Rate</div></div>
+    </div>
+    <div class="profile-stats-row">
+      <div class="profile-stat"><div class="num">148</div><div class="lbl">Jobs Completed</div></div>
+      <div class="profile-stat"><div class="num">$48K</div><div class="lbl">Total Earned</div></div>
+      <div class="profile-stat"><div class="num">96%</div><div class="lbl">Job Success</div></div>
+      <div class="profile-stat"><div class="num">3 yrs</div><div class="lbl">On LancerHub</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(this,'tab-about')">About</div>
+      <div class="tab" onclick="switchTab(this,'tab-portfolio')">Portfolio</div>
+      <div class="tab" onclick="switchTab(this,'tab-reviews')">Reviews</div>
+    </div>
+    <div id="tab-about">
+      <div class="two-col">
+        <div>
+          <div style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--brown);margin-bottom:14px">About Me</div>
+          <p style="color:var(--text-mid);line-height:1.75;font-size:14px">Full-stack developer with 6+ years building scalable web apps and beautiful interfaces. Specializing in React, Node.js, and cloud architecture. Passionate about clean code and pixel-perfect design.</p>
+          <div style="margin-top:24px;font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--brown);margin-bottom:12px">Skills</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px"><span class="fl-tag">React</span><span class="fl-tag">Node.js</span><span class="fl-tag">TypeScript</span><span class="fl-tag">PostgreSQL</span><span class="fl-tag">Figma</span><span class="fl-tag">AWS</span><span class="fl-tag">GraphQL</span><span class="fl-tag">Docker</span></div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--brown);margin-bottom:14px">Availability</div>
+          <div style="background:var(--cream-deep);border:2px solid var(--border);border-radius:14px;padding:20px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span style="color:var(--text-soft);font-size:13px;font-weight:500">Status</span><span class="badge badge-pista">Available</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="color:var(--text-soft);font-size:13px;font-weight:500">Hours/week</span><span style="font-size:13px;color:var(--brown);font-weight:600">Up to 40hrs</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text-soft);font-size:13px;font-weight:500">Response time</span><span style="font-size:13px;color:var(--brown);font-weight:600">~2 hours</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-portfolio" class="hidden">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px">
+        <div style="background:var(--cream-card);border:2px solid var(--border-light);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:.2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(93,61,30,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''"><div style="height:130px;background:linear-gradient(135deg,var(--pista-light),var(--sky-light));display:flex;align-items:center;justify-content:center;font-size:44px">🖥️</div><div style="padding:16px"><div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--brown);margin-bottom:4px">SaaS Dashboard</div><div style="font-size:12px;color:var(--text-soft)">React + Tailwind</div></div></div>
+        <div style="background:var(--cream-card);border:2px solid var(--border-light);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:.2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(93,61,30,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''"><div style="height:130px;background:linear-gradient(135deg,var(--sky-light),var(--peach-light));display:flex;align-items:center;justify-content:center;font-size:44px">📱</div><div style="padding:16px"><div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--brown);margin-bottom:4px">Mobile Banking App</div><div style="font-size:12px;color:var(--text-soft)">React Native</div></div></div>
+        <div style="background:var(--cream-card);border:2px solid var(--border-light);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:.2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(93,61,30,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''"><div style="height:130px;background:linear-gradient(135deg,var(--peach-light),var(--pista-light));display:flex;align-items:center;justify-content:center;font-size:44px">🛒</div><div style="padding:16px"><div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--brown);margin-bottom:4px">E-Commerce Platform</div><div style="font-size:12px;color:var(--text-soft)">Next.js + Stripe</div></div></div>
+      </div>
+    </div>
+    <div id="tab-reviews" class="hidden">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="panel" style="padding:22px"><div style="display:flex;gap:14px"><div class="avatar" style="width:42px;height:42px;font-size:14px;background:linear-gradient(135deg,var(--pista-dark),var(--sky-dark))">SC</div><div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-weight:700;color:var(--brown)">Sarah Chen</span><span style="color:var(--peach);font-size:13px;font-weight:600">★★★★★ 5.0</span></div><div style="font-size:12px;color:var(--text-soft);margin-bottom:10px">2 weeks ago · Web Development</div><p style="font-size:13px;color:var(--text-mid);line-height:1.6">Alex delivered exceptional work — clean code, on time, and went above and beyond. Highly recommend!</p></div></div></div>
+        <div class="panel" style="padding:22px"><div style="display:flex;gap:14px"><div class="avatar" style="width:42px;height:42px;font-size:14px;background:linear-gradient(135deg,var(--peach),var(--coral))">MR</div><div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-weight:700;color:var(--brown)">Marcus R.</span><span style="color:var(--peach);font-size:13px;font-weight:600">★★★★☆ 4.8</span></div><div style="font-size:12px;color:var(--text-soft);margin-bottom:10px">1 month ago · UI Design</div><p style="font-size:13px;color:var(--text-mid);line-height:1.6">Stunning designs and great communication. Will definitely hire again!</p></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-login">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-login')">×</button>
+    <h2>Welcome back 👋</h2><p class="sub">Sign in to your LancerHub account</p>
+    <div class="form-group"><label>Email</label><input id="login-email" type="email" placeholder="you@email.com"></div>
+    <div class="form-group"><label>Password</label><input id="login-password" type="password" placeholder="••••••••"></div>
+    <button id="login-btn" class="btn btn-pista" style="width:100%;justify-content:center;padding:13px" onclick="handleLogin()">Sign In</button>
+    <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--text-soft)">No account? <span style="color:var(--pista-dark);cursor:pointer;font-weight:600" onclick="closeModal('modal-login');openModal('modal-register')">Join free →</span></p>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-register">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-register')">×</button>
+    <h2>Create account ✦</h2><p class="sub">Join thousands of freelancers and clients</p>
+    <div class="form-row">
+      <div class="form-group"><label>First Name</label><input id="reg-firstname" type="text" placeholder="Alex"></div>
+      <div class="form-group"><label>Last Name</label><input id="reg-lastname" type="text" placeholder="Kumar"></div>
+    </div>
+    <div class="form-group"><label>Email</label><input id="reg-email" type="email" placeholder="you@email.com"></div>
+    <div class="form-group"><label>Password</label><input id="reg-password" type="password" placeholder="Create a strong password (min 6 chars)"></div>
+    <div class="form-group"><label>I am a</label>
+      <select id="reg-role"><option value="freelancer">Freelancer — I want to find work</option><option value="client">Client — I want to hire</option></select>
+    </div>
+    <button id="register-btn" class="btn btn-pista" style="width:100%;justify-content:center;padding:13px" onclick="handleRegister()">Create Account →</button>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-post-job">
+  <div class="modal" style="max-width:580px">
+    <button class="modal-close" onclick="closeModal('modal-post-job')">×</button>
+    <h2>Post a Job</h2><p class="sub">Find the right freelancer for your project</p>
+    <div class="form-group"><label>Job Title</label><input type="text" id="new-job-title" placeholder="e.g. Build a React Dashboard"></div>
+    <div class="form-group"><label>Category</label>
+      <select id="new-job-cat">
+        <option value="development">💻 Development</option><option value="design">🎨 Design</option>
+        <option value="writing">✍️ Writing</option><option value="marketing">📢 Marketing</option>
+        <option value="video">🎬 Video</option><option value="data">📊 Data & AI</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Description</label><textarea id="new-job-desc" placeholder="Describe the project scope..."></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Budget ($)</label><input type="number" id="new-job-budget" placeholder="1500"></div>
+      <div class="form-group"><label>Duration</label>
+        <select id="new-job-dur"><option>Less than a week</option><option>1–2 weeks</option><option selected>2–4 weeks</option><option>1–3 months</option><option>3+ months</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label>Required Skills (comma-separated)</label><input type="text" id="new-job-skills" placeholder="React, Node.js, MongoDB"></div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-post-job')">Cancel</button>
+      <button id="post-job-btn" class="btn btn-pista" onclick="postJob()">Post Job →</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-apply">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-apply')">×</button>
+    <h2>Submit Proposal</h2><p class="sub" id="apply-job-name">Job Title</p>
+    <div class="form-group"><label>Cover Letter</label><textarea id="apply-cover" placeholder="Explain why you are the best fit..." style="min-height:120px"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Your Bid ($)</label><input id="apply-bid" type="number" placeholder="1200"></div>
+      <div class="form-group"><label>Delivery Time</label>
+        <select id="apply-delivery"><option>3 days</option><option>1 week</option><option>2 weeks</option><option>1 month</option></select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-apply')">Cancel</button>
+      <button id="apply-btn" class="btn btn-pista" onclick="submitApply()">Submit →</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-invoice">
+  <div class="modal" style="max-width:560px">
+    <button class="modal-close" onclick="closeModal('modal-invoice')">×</button>
+    <h2>Create Invoice 💳</h2><p class="sub">Send a professional invoice to your client</p>
+    <div class="form-group"><label>Service / Project Description</label><input id="inv-desc" type="text" placeholder="Website Redesign Phase 2"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Amount ($)</label><input type="number" id="inv-amount" placeholder="2500"></div>
+      <div class="form-group"><label>Due Date</label><input type="date" id="inv-due"></div>
+    </div>
+    <div class="form-group"><label>Notes (optional)</label><textarea id="inv-notes" placeholder="Payment terms, bank details..."></textarea></div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-invoice')">Cancel</button>
+      <button id="invoice-btn" class="btn btn-sky" onclick="createInvoice()">Send Invoice →</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-edit-profile">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-edit-profile')">×</button>
+    <h2>Edit Profile</h2><p class="sub">Update your public profile</p>
+    <div class="form-row">
+      <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your name"></div>
+      <div class="form-group"><label>Hourly Rate ($)</label><input type="number" placeholder="65"></div>
+    </div>
+    <div class="form-group"><label>Title</label><input type="text" placeholder="Full-Stack Developer"></div>
+    <div class="form-group"><label>Location</label><input type="text" placeholder="Mumbai, India"></div>
+    <div class="form-group"><label>Bio</label><textarea style="min-height:90px" placeholder="Tell clients about yourself..."></textarea></div>
+    <div class="form-group"><label>Skills (comma-separated)</label><input type="text" placeholder="React, Node.js, Figma"></div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-edit-profile')">Cancel</button>
+      <button id="save-profile-btn" class="btn btn-pista" onclick="saveProfile()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"><span id="toast-icon">✅</span><span id="toast-msg">Done!</span></div>
+
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+<script>
+// ════════════════════════════════════════════
+//  CONFIG — change this to your backend URL
+// ════════════════════════════════════════════
+const API = 'http://localhost:5000/api';
+
+// ── App state ────────────────────────────────
+let AUTH = { token: localStorage.getItem('lh_token'), user: JSON.parse(localStorage.getItem('lh_user') || 'null') };
+let socket = null;
+let currentChat = null;
+let currentConversationId = null;
+let jobFilter = 'all';
+let flFilter  = 'all';
+let currentJobId = null;   // for applying
+
+// ── Loading spinner html ──────────────────────
+const SPINNER = `<div style="text-align:center;padding:60px 0;color:var(--text-soft)">
+  <div style="font-size:28px;margin-bottom:12px;animation:spin 1s linear infinite;display:inline-block">⏳</div>
+  <div style="font-size:14px">Loading...</div>
+</div>`;
+const styleEl = document.createElement('style');
+styleEl.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+document.head.appendChild(styleEl);
+
+// ════════════════════════════════════════════
+//  API HELPER
+// ════════════════════════════════════════════
+async function api(path, options = {}) {
+  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  if (AUTH.token) headers['Authorization'] = `Bearer ${AUTH.token}`;
+
+  const res = await fetch(`${API}${path}`, { ...options, headers });
+  const data = await res.json();
+
+  if (!res.ok) {
+    const msg = data.message || data.errors?.[0]?.msg || 'Something went wrong';
+    showToast('❌', msg);
+    throw new Error(msg);
+  }
+  return data;
+}
+
+// ════════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════════
+function saveAuth(token, user) {
+  AUTH = { token, user };
+  localStorage.setItem('lh_token', token);
+  localStorage.setItem('lh_user', JSON.stringify(user));
+  updateNavForAuth();
+  connectSocket();
+}
+
+function clearAuth() {
+  AUTH = { token: null, user: null };
+  localStorage.removeItem('lh_token');
+  localStorage.removeItem('lh_user');
+  socket?.disconnect();
+  socket = null;
+  updateNavForAuth();
+}
+
+function updateNavForAuth() {
+  const user = AUTH.user;
+  const navRight = document.querySelector('.nav-right');
+  if (!navRight) return;
+  if (user) {
+    const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+    navRight.innerHTML = `
+      <div id="notif-bell" onclick="showToast('🔔','No new notifications')">🔔<div id="notif-dot"></div></div>
+      <span style="font-size:14px;color:var(--text-mid);font-weight:500">Hi, ${user.name.split(' ')[0]}!</span>
+      <button class="btn btn-outline" onclick="handleLogout()">Sign Out</button>
+      <div class="avatar" onclick="showPage('profile',document.querySelector('.nav-link'))" title="${user.name}">${initials}</div>`;
+  } else {
+    navRight.innerHTML = `
+      <div id="notif-bell" onclick="showToast('🔔','Sign in to see notifications')">🔔<div id="notif-dot" style="display:none"></div></div>
+      <button class="btn btn-outline" onclick="openModal('modal-login')">Sign In</button>
+      <button class="btn btn-pista" onclick="openModal('modal-register')">Join Free ✦</button>`;
+  }
+}
+
+async function handleLogin() {
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) return showToast('⚠️','Enter email and password');
+
+  const btn = document.getElementById('login-btn');
+  btn.textContent = 'Signing in…'; btn.disabled = true;
+  try {
+    const data = await api('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+    saveAuth(data.token, data.user);
+    closeModal('modal-login');
+    showToast('✅', `Welcome back, ${data.user.name.split(' ')[0]}!`);
+  } finally {
+    btn.textContent = 'Sign In'; btn.disabled = false;
+  }
+}
+
+async function handleRegister() {
+  const firstName = document.getElementById('reg-firstname').value.trim();
+  const lastName  = document.getElementById('reg-lastname').value.trim();
+  const email     = document.getElementById('reg-email').value.trim();
+  const password  = document.getElementById('reg-password').value;
+  const roleRaw   = document.getElementById('reg-role').value;
+  const role      = roleRaw === 'client' ? 'client' : 'freelancer';
+
+  if (!firstName || !email || !password) return showToast('⚠️','Please fill all required fields');
+
+  const btn = document.getElementById('register-btn');
+  btn.textContent = 'Creating…'; btn.disabled = true;
+  try {
+    const data = await api('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ name: `${firstName} ${lastName}`.trim(), email, password, role }),
+    });
+    saveAuth(data.token, data.user);
+    closeModal('modal-register');
+    showToast('🎉', `Welcome to LancerHub, ${data.user.name.split(' ')[0]}!`);
+  } finally {
+    btn.textContent = 'Create Account →'; btn.disabled = false;
+  }
+}
+
+async function handleLogout() {
+  try { await api('/auth/logout', { method: 'POST' }); } catch {}
+  clearAuth();
+  showToast('👋', 'Logged out successfully');
+  showPage('home', document.querySelector('.nav-link'));
+}
+
+// ════════════════════════════════════════════
+//  SOCKET.IO  — real-time messages & notifications
+// ════════════════════════════════════════════
+function connectSocket() {
+  if (!AUTH.token || socket?.connected) return;
+  socket = io('http://localhost:5000', { auth: { token: AUTH.token } });
+
+  socket.on('connect', () => console.log('🟢 Socket connected'));
+  socket.on('disconnect', () => console.log('🔴 Socket disconnected'));
+
+  // Incoming chat message
+  socket.on('message:receive', ({ message }) => {
+    if (currentConversationId === message.conversation) appendBubble(message);
+  });
+
+  // Typing indicator
+  socket.on('typing:start', ({ userId }) => {
+    const el = document.getElementById('typing-indicator');
+    if (el) el.style.display = 'block';
+  });
+  socket.on('typing:stop', () => {
+    const el = document.getElementById('typing-indicator');
+    if (el) el.style.display = 'none';
+  });
+
+  // Notifications
+  socket.on('notification:new_proposal', ({ jobTitle, freelancerName }) => {
+    showToast('📨', `${freelancerName} applied to "${jobTitle}"`);
+    document.getElementById('notif-dot').style.display = 'block';
+  });
+  socket.on('notification:proposal_accepted', ({ jobTitle }) => {
+    showToast('🎉', `Your proposal for "${jobTitle}" was accepted!`);
+  });
+  socket.on('notification:proposal_rejected', ({ jobTitle }) => {
+    showToast('😔', `Proposal for "${jobTitle}" was not selected.`);
+  });
+}
+
+// ════════════════════════════════════════════
+//  JOBS
+// ════════════════════════════════════════════
+async function renderJobs(cat = 'all') {
+  const el = document.getElementById('jobs-list');
+  el.innerHTML = SPINNER;
+
+  const params = new URLSearchParams({ limit: 12 });
+  if (cat !== 'all') params.set('category', cat);
+
+  try {
+    const { jobs } = await api(`/jobs?${params}`);
+    if (!jobs.length) { el.innerHTML = emptyState('📋','No jobs found','Try a different category or post the first one!'); return; }
+    el.innerHTML = jobs.map(jobCard).join('');
+  } catch {
+    el.innerHTML = errorState('Could not load jobs');
+  }
+}
+
+function jobCard(j) {
+  const budget = j.budgetType === 'hourly'
+    ? `$${j.budgetMin}–$${j.budgetMax || j.budgetMin}/hr`
+    : `$${j.budgetMin}${j.budgetMax ? '–$'+j.budgetMax : ''}`;
+  const catIcons = { development:'💻', design:'🎨', writing:'✍️', marketing:'📢', video:'🎬', data:'📊', other:'📌' };
+  const icon = catIcons[j.category] || '📌';
+  const skillsHtml = (j.skills || []).slice(0,3).map(s => `<span class="fl-tag">${s}</span>`).join('');
+  return `
+    <div class="job-card fade-up">
+      <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px">
+        <div class="job-logo">${icon}</div>
+        <div style="flex:1">
+          <h3>${j.title}</h3>
+          <div class="job-company">${j.client?.name || 'Anonymous'}</div>
+        </div>
+        <span class="badge badge-${j.budgetType==='fixed'?'pista':'sky'}">${j.budgetType}</span>
+      </div>
+      <div class="job-desc">${j.description}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">${skillsHtml}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1.5px solid var(--border-light)">
+        <div>
+          <div class="job-budget">${budget}</div>
+          <div style="font-size:12px;color:var(--text-soft);margin-top:2px">
+            📬 ${j.proposalCount || 0} proposals
+          </div>
+        </div>
+        <button class="btn btn-pista" style="font-size:13px;padding:9px 18px"
+          onclick="applyJob('${j._id}','${j.title.replace(/'/g,"\\'")}')">Apply Now</button>
+      </div>
+    </div>`;
+}
+
+async function postJob() {
+  if (!AUTH.token) return openModal('modal-login');
+
+  const title    = document.getElementById('new-job-title').value.trim();
+  const category = document.getElementById('new-job-cat').value;
+  const desc     = document.getElementById('new-job-desc').value.trim();
+  const budget   = document.getElementById('new-job-budget').value;
+  const dur      = document.getElementById('new-job-dur').value;
+  const skillsRaw= document.getElementById('new-job-skills').value;
+  const skills   = skillsRaw.split(',').map(s => s.trim()).filter(Boolean);
+
+  if (!title) return showToast('⚠️','Please enter a job title');
+  if (!desc)  return showToast('⚠️','Please add a description');
+
+  const durMap = {
+    'Less than a week':'less_than_week','1–2 weeks':'1_2_weeks',
+    '2–4 weeks':'2_4_weeks','1–3 months':'1_3_months','3+ months':'3_plus_months',
+  };
+
+  const btn = document.getElementById('post-job-btn');
+  btn.textContent = 'Posting…'; btn.disabled = true;
+  try {
+    await api('/jobs', {
+      method: 'POST',
+      body: JSON.stringify({
+        title, category, description: desc,
+        budgetMin: Number(budget) || 100, budgetType: 'fixed',
+        duration: durMap[dur] || '2_4_weeks', skills,
+      }),
+    });
+    closeModal('modal-post-job');
+    showToast('🎉','Job posted successfully!');
+    showPage('jobs', document.querySelector('.nav-link:nth-child(2)'));
+  } finally {
+    btn.textContent = 'Post Job →'; btn.disabled = false;
+  }
+}
+
+function applyJob(jobId, title) {
+  if (!AUTH.token) { showToast('🔒','Please sign in to apply'); openModal('modal-login'); return; }
+  currentJobId = jobId;
+  document.getElementById('apply-job-name').textContent = title;
+  document.getElementById('apply-cover').value = '';
+  document.getElementById('apply-bid').value   = '';
+  openModal('modal-apply');
+}
+
+async function submitApply() {
+  const cover    = document.getElementById('apply-cover').value.trim();
+  const bid      = document.getElementById('apply-bid').value;
+  const delivery = document.getElementById('apply-delivery').value;
+  const dayMap   = {'3 days':3,'1 week':7,'2 weeks':14,'1 month':30};
+
+  if (!cover) return showToast('⚠️','Please write a cover letter');
+  if (!bid)   return showToast('⚠️','Please enter your bid amount');
+
+  const btn = document.getElementById('apply-btn');
+  btn.textContent = 'Submitting…'; btn.disabled = true;
+  try {
+    await api('/proposals', {
+      method: 'POST',
+      body: JSON.stringify({
+        job: currentJobId, coverLetter: cover,
+        bidAmount: Number(bid), deliveryDays: dayMap[delivery] || 7,
+      }),
+    });
+    closeModal('modal-apply');
+    showToast('✅','Proposal submitted successfully!');
+  } finally {
+    btn.textContent = 'Submit →'; btn.disabled = false;
+  }
+}
+
+// ════════════════════════════════════════════
+//  FREELANCERS
+// ════════════════════════════════════════════
+async function renderFreelancers(cat = 'all') {
+  const el = document.getElementById('freelancers-list');
+  el.innerHTML = SPINNER;
+
+  const params = new URLSearchParams({ limit: 12 });
+  if (cat !== 'all') {
+    const catMap = { dev:'development', design:'design', writing:'writing', marketing:'marketing' };
+    // Filter by title keyword (backend supports search)
+    params.set('search', catMap[cat] || cat);
+  }
+
+  try {
+    const { freelancers } = await api(`/users?${params}`);
+    if (!freelancers.length) { el.innerHTML = emptyState('👤','No freelancers found','Try a different category'); return; }
+    el.innerHTML = freelancers.map(freelancerCard).join('');
+  } catch {
+    el.innerHTML = errorState('Could not load freelancers');
+  }
+}
+
+function freelancerCard(f) {
+  const initials = f.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  const colors   = ['linear-gradient(135deg,#6b9e62,#3a9bbf)',
+                    'linear-gradient(135deg,#e8a87c,#d9614c)',
+                    'linear-gradient(135deg,#a8c5a0,#7ec8e3)',
+                    'linear-gradient(135deg,#3a9bbf,#6b9e62)'];
+  const color    = colors[f.name.charCodeAt(0) % colors.length];
+  const stars    = '★'.repeat(Math.floor(f.avgRating || 0)) + '☆'.repeat(5 - Math.floor(f.avgRating || 0));
+  const tagsHtml = (f.skills || []).slice(0, 3).map(t => `<div class="fl-tag">${t}</div>`).join('');
+  return `
+    <div class="fl-card fade-up">
+      <div class="fl-avatar" style="background:${color}">${initials}</div>
+      <div class="fl-name">${f.name}</div>
+      <div class="fl-role">${f.title || 'Freelancer'}</div>
+      <div class="fl-stars">${stars} ${f.avgRating?.toFixed(1) || '—'} (${f.totalReviews || 0})</div>
+      <div class="fl-tags">${tagsHtml}</div>
+      <div class="fl-rate">${f.hourlyRate ? '$'+f.hourlyRate+'/hr' : 'Rate TBD'}</div>
+      <div style="margin-top:16px;display:flex;gap:8px">
+        <button class="btn btn-outline" style="flex:1;justify-content:center;font-size:13px"
+          onclick="startConversation('${f._id}','${f.name.replace(/'/g,"\\'")}')">Message</button>
+        <button class="btn btn-pista" style="flex:1;justify-content:center;font-size:13px"
+          onclick="showToast('✅','Hire request sent to ${f.name.split(' ')[0]}!')">Hire</button>
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════
+//  MESSAGES
+// ════════════════════════════════════════════
+async function renderConversations() {
+  const el = document.getElementById('conv-list');
+  el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-soft);font-size:13px">Loading...</div>';
+
+  if (!AUTH.token) {
+    el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-soft);font-size:13px">Sign in to view messages</div>';
+    return;
+  }
+
+  try {
+    const { conversations } = await api('/messages/conversations');
+    if (!conversations.length) {
+      el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-soft);font-size:13px">No conversations yet</div>';
+      return;
+    }
+    el.innerHTML = conversations.map(c => {
+      const other = c.participants.find(p => p._id !== AUTH.user?._id) || c.participants[0];
+      const initials = (other?.name || 'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+      const unread = c.unreadCount?.get?.(AUTH.user?._id) || 0;
+      const preview = c.lastMessage?.content || 'Start a conversation';
+      const timeStr = c.lastMessageAt ? new Date(c.lastMessageAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) : '';
+      return `
+        <div class="conv-item ${currentConversationId===c._id?'active':''}" onclick="openChat('${c._id}','${other?._id}','${(other?.name||'User').replace(/'/g,"\\'")}')">
+          <div class="avatar" style="width:40px;height:40px;font-size:14px">${initials}</div>
+          <div style="flex:1;min-width:0">
+            <div class="conv-name">${other?.name || 'User'}</div>
+            <div class="conv-preview">${preview}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+            <div class="conv-time">${timeStr}</div>
+            ${unread > 0 ? `<div class="conv-unread">${unread}</div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+  } catch {
+    el.innerHTML = errorState('Could not load conversations');
+  }
+}
+
+async function openChat(conversationId, otherUserId, otherName) {
+  currentConversationId = conversationId;
+  currentChat = { conversationId, otherUserId, otherName };
+
+  document.getElementById('chat-name').textContent = otherName;
+  document.getElementById('chat-status').textContent = '🟢 Online';
+  document.getElementById('chat-av').textContent = otherName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+
+  // Join socket room
+  socket?.emit('conversation:join', conversationId);
+
+  const box = document.getElementById('chat-messages');
+  box.innerHTML = SPINNER;
+
+  try {
+    const { messages } = await api(`/messages/${conversationId}`);
+    box.innerHTML = messages.length
+      ? messages.map(m => bubbleHtml(m)).join('')
+      : '<div style="text-align:center;padding:40px;color:var(--text-soft);font-size:13px">No messages yet — say hello!</div>';
+    box.scrollTop = box.scrollHeight;
+  } catch {
+    box.innerHTML = errorState('Could not load messages');
+  }
+
+  renderConversations(); // refresh unread badges
+}
+
+function bubbleHtml(m) {
+  const isMine = m.sender?._id === AUTH.user?._id || m.sender === AUTH.user?._id;
+  const time   = new Date(m.createdAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  return `
+    <div class="msg-bubble ${isMine?'sent':'recv'}">
+      <div class="bubble-text">${m.content}</div>
+      <div class="bubble-time">${time}</div>
+    </div>`;
+}
+
+function appendBubble(m) {
+  const box = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.innerHTML = bubbleHtml(m);
+  box.appendChild(div.firstElementChild);
+  box.scrollTop = box.scrollHeight;
+}
+
+async function sendMessage() {
+  if (!AUTH.token) { showToast('🔒','Please sign in'); return; }
+  if (!currentConversationId) return;
+  const input = document.getElementById('msg-input');
+  const text  = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  socket?.emit('typing:stop', { conversationId: currentConversationId });
+
+  try {
+    const { message } = await api(`/messages/${currentConversationId}`, {
+      method: 'POST', body: JSON.stringify({ content: text }),
+    });
+    appendBubble(message);
+    socket?.emit('message:send', { conversationId: currentConversationId, message });
+  } catch {}
+}
+
+function handleMsgKey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+
+let typingTimer;
+function handleTyping() {
+  if (!currentConversationId || !socket) return;
+  socket.emit('typing:start', { conversationId: currentConversationId });
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(() => socket.emit('typing:stop', { conversationId: currentConversationId }), 1500);
+}
+
+async function startConversation(userId, name) {
+  if (!AUTH.token) { showToast('🔒','Sign in to message'); openModal('modal-login'); return; }
+  try {
+    const { conversation } = await api('/messages/conversations', {
+      method: 'POST', body: JSON.stringify({ recipientId: userId }),
+    });
+    showPage('messages', document.querySelector('.nav-link:nth-child(4)'));
+    setTimeout(() => openChat(conversation._id, userId, name), 300);
+  } catch {}
+}
+
+// ════════════════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════════════════
+async function loadDashboard() {
+  if (!AUTH.token) {
+    document.querySelector('#page-dashboard .section').innerHTML = `
+      <div style="text-align:center;padding:80px 20px">
+        <div style="font-size:48px;margin-bottom:16px">🔒</div>
+        <div style="font-family:var(--font-head);font-size:22px;color:var(--brown);margin-bottom:10px">Sign in to view your dashboard</div>
+        <button class="btn btn-pista" onclick="openModal('modal-login')">Sign In</button>
+      </div>`;
+    return;
+  }
+
+  try {
+    const { user, activeJobs } = await api('/users/dashboard');
+
+    // Update stat cards
+    const statNums = document.querySelectorAll('.ds-num');
+    if (statNums[0]) statNums[0].textContent = `$${(user?.totalEarned || 0).toLocaleString()}`;
+    if (statNums[1]) statNums[1].textContent = activeJobs?.length || 0;
+    if (statNums[2]) statNums[2].textContent = `—`;
+    if (statNums[3]) statNums[3].textContent = user?.totalReviews || 0;
+
+    renderActiveProjects(activeJobs || []);
+    await renderInvoices();
+  } catch {}
+}
+
+function renderActiveProjects(jobs = []) {
+  const el = document.getElementById('active-projects-list');
+  if (!jobs.length) {
+    el.innerHTML = '<div style="color:var(--text-soft);font-size:13px;text-align:center;padding:20px">No active projects</div>';
+    return;
+  }
+  el.innerHTML = jobs.map(j => `
+    <div style="margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--brown)">${j.title}</div>
+          <div style="font-size:12px;color:var(--text-soft)">${j.client?.name || 'Client'}</div>
+        </div>
+        <div style="font-family:var(--font-head);font-size:17px;font-weight:800;color:var(--pista-dark)">Active</div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════
+//  INVOICES
+// ════════════════════════════════════════════
+async function renderInvoices() {
+  const tbody = document.getElementById('invoices-tbody');
+  tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-soft)">Loading…</td></tr>`;
+  if (!AUTH.token) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-soft)">Sign in to view invoices</td></tr>`;
+    return;
+  }
+  try {
+    const { invoices } = await api('/invoices');
+    if (!invoices.length) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-soft)">No invoices yet</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = invoices.map(inv => `
+      <tr>
+        <td style="font-family:var(--font-head);font-size:13px;color:var(--brown);font-weight:700">${inv.invoiceNumber}</td>
+        <td>${inv.client?.name || '—'}</td>
+        <td style="color:var(--text-soft)">${inv.items?.[0]?.description || 'Service'}</td>
+        <td style="font-family:var(--font-head);font-weight:700;color:var(--brown)">$${inv.totalAmount?.toFixed(2)}</td>
+        <td style="color:var(--text-soft)">${new Date(inv.dueDate).toLocaleDateString()}</td>
+        <td><span class="invoice-status status-${inv.status}">${inv.status.charAt(0).toUpperCase()+inv.status.slice(1)}</span></td>
+        <td>
+          ${inv.status === 'draft' ? `<button class="btn btn-ghost" style="font-size:12px;padding:6px 14px" onclick="sendInvoice('${inv._id}')">Send</button>` : ''}
+        </td>
+      </tr>`).join('');
+  } catch {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-soft)">Could not load invoices</td></tr>`;
+  }
+}
+
+async function createInvoice() {
+  if (!AUTH.token) return openModal('modal-login');
+  const clientId  = document.getElementById('inv-client-id')?.value;
+  const desc      = document.getElementById('inv-desc').value.trim() || 'Service';
+  const amount    = Number(document.getElementById('inv-amount').value);
+  const dueDate   = document.getElementById('inv-due').value;
+  const notes     = document.getElementById('inv-notes').value.trim();
+
+  if (!amount)   return showToast('⚠️','Please enter an amount');
+  if (!dueDate)  return showToast('⚠️','Please select a due date');
+
+  const btn = document.getElementById('invoice-btn');
+  btn.textContent = 'Sending…'; btn.disabled = true;
+  try {
+    const { invoice } = await api('/invoices', {
+      method: 'POST',
+      body: JSON.stringify({
+        client: clientId || AUTH.user?._id, // fallback — replace with real client ID
+        items: [{ description: desc, quantity: 1, rate: amount, amount }],
+        dueDate, notes,
+      }),
+    });
+    // Auto-send
+    await api(`/invoices/${invoice._id}/send`, { method: 'PUT' });
+    closeModal('modal-invoice');
+    showToast('💳', `Invoice ${invoice.invoiceNumber} sent!`);
+    renderInvoices();
+  } finally {
+    btn.textContent = 'Send Invoice →'; btn.disabled = false;
+  }
+}
+
+async function sendInvoice(id) {
+  try {
+    await api(`/invoices/${id}/send`, { method: 'PUT' });
+    showToast('📤','Invoice sent to client!');
+    renderInvoices();
+  } catch {}
+}
+
+// ════════════════════════════════════════════
+//  PROFILE
+// ════════════════════════════════════════════
+async function loadProfile() {
+  if (!AUTH.token) return;
+  try {
+    const { user } = await api('/auth/me');
+    const initials = user.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    document.querySelector('.profile-av').textContent = initials;
+    document.querySelector('#page-profile h2').textContent = user.name;
+    document.querySelector('.profile-info .role').textContent =
+      `${user.title || 'Freelancer'} · ${user.location || 'Location not set'}`;
+
+    const stats = document.querySelectorAll('.profile-stat .num');
+    if (stats[0]) stats[0].textContent = user.jobsCompleted || 0;
+    if (stats[1]) stats[1].textContent = user.totalEarned ? `$${(user.totalEarned/1000).toFixed(0)}K` : '$0';
+    if (stats[2]) stats[2].textContent = `${user.successRate || 100}%`;
+
+    // Pre-fill edit form
+    document.querySelector('#modal-edit-profile input[placeholder="Alex Kumar"], #modal-edit-profile input:first-of-type')
+      ?.setAttribute('value', user.name);
+  } catch {}
+}
+
+async function saveProfile() {
+  const inputs = document.querySelectorAll('#modal-edit-profile input, #modal-edit-profile textarea');
+  const [nameEl, rateEl, titleEl, locationEl, bioEl, skillsEl] = inputs;
+  const btn = document.getElementById('save-profile-btn');
+  btn.textContent = 'Saving…'; btn.disabled = true;
+  try {
+    await api('/users/profile', {
+      method: 'PUT',
+      body: JSON.stringify({
+        name:       nameEl?.value.trim(),
+        hourlyRate: Number(rateEl?.value) || 0,
+        title:      titleEl?.value.trim(),
+        location:   locationEl?.value.trim(),
+        bio:        bioEl?.value.trim(),
+        skills:     skillsEl?.value.split(',').map(s=>s.trim()).filter(Boolean),
+      }),
+    });
+    closeModal('modal-edit-profile');
+    showToast('✅','Profile updated!');
+    loadProfile();
+  } finally {
+    btn.textContent = 'Save Changes'; btn.disabled = false;
+  }
+}
+
+// ════════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════════
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (el && el.classList) el.classList.add('active');
+
+  if (name === 'jobs')        renderJobs(jobFilter);
+  if (name === 'freelancers') renderFreelancers(flFilter);
+  if (name === 'messages')    { renderConversations(); }
+  if (name === 'dashboard')   loadDashboard();
+  if (name === 'profile')     loadProfile();
+}
+
+function filterCat(el, cat) {
+  document.querySelectorAll('#page-jobs .cats .cat-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); jobFilter = cat; renderJobs(cat);
+}
+function filterFL(el, cat) {
+  document.querySelectorAll('#page-freelancers .cats .cat-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); flFilter = cat; renderFreelancers(cat);
+}
+
+// ════════════════════════════════════════════
+//  MODALS
+// ════════════════════════════════════════════
+function openModal(id)  { document.getElementById(id).classList.add('open');    document.body.style.overflow = 'hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+document.querySelectorAll('.modal-overlay').forEach(o =>
+  o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); })
+);
+
+// ════════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════════
+let toastTimer;
+function showToast(icon, msg) {
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-msg').textContent  = msg;
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ════════════════════════════════════════════
+//  TABS
+// ════════════════════════════════════════════
+function switchTab(el, id) {
+  el.closest('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['tab-about','tab-portfolio','tab-reviews'].forEach(tid => {
+    const e = document.getElementById(tid);
+    if (e) e.classList.toggle('hidden', tid !== id);
+  });
+}
+
+// ════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════
+function emptyState(icon, title, sub) {
+  return `<div style="grid-column:1/-1;text-align:center;padding:60px 20px">
+    <div style="font-size:44px;margin-bottom:12px">${icon}</div>
+    <div style="font-family:var(--font-head);font-size:20px;color:var(--brown);margin-bottom:6px">${title}</div>
+    <div style="font-size:13px;color:var(--text-soft)">${sub}</div>
+  </div>`;
+}
+function errorState(msg) {
+  return `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--coral)">
+    <div style="font-size:36px;margin-bottom:12px">⚠️</div>
+    <div style="font-size:14px">${msg}</div>
+    <div style="font-size:12px;color:var(--text-soft);margin-top:6px">Make sure your backend is running at <code>${API}</code></div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════
+//  BOOT
+// ════════════════════════════════════════════
+updateNavForAuth();
+if (AUTH.token) connectSocket();
+renderJobs();
+
+
+</script>
+</body>
+</html>
