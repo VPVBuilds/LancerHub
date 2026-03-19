@@ -222,7 +222,162 @@
   .cat-card { background: var(--cream-card); border: 2px solid var(--border-light); border-radius: var(--radius); padding: 26px 18px; text-align: center; cursor: pointer; transition: all .2s; }
   .cat-card:hover { border-color: var(--pista); transform: translateY(-3px); box-shadow: var(--shadow-md); background: var(--pista-light); }
 
-  @media(max-width:900px){nav{padding:0 18px;}.hero{padding:50px 22px 42px;}.section{padding:36px 20px;}.dash-grid{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}#page-messages .msg-layout{grid-template-columns:1fr;}.chat-area{display:none;}.form-row{grid-template-columns:1fr;}.profile-top{flex-direction:column;}}
+  /* ══ MOBILE BOTTOM NAV ══ */
+  .mobile-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+    background: var(--cream-card); border-top: 2px solid var(--border);
+    padding: 8px 0 max(12px, env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 20px rgba(93,61,30,.1);
+  }
+  .mobile-nav-inner { display: flex; justify-content: space-around; align-items: center; }
+  .mob-nav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    cursor: pointer; padding: 6px 8px; border-radius: 10px; color: var(--text-soft);
+    font-size: 10px; font-weight: 600; transition: all .15s; min-width: 52px; text-align: center;
+  }
+  .mob-icon { font-size: 20px; line-height: 1; }
+  .mob-nav-item.active { color: var(--pista-deep); }
+  .mob-nav-item.active .mob-icon { transform: scale(1.1); }
+
+  @media(max-width:900px) {
+    .mob-back-btn { display: block !important; }
+    nav { padding: 0 16px; }
+    .nav-links { display: none; }
+    .nav-right .btn-outline { display: none; }
+    .hero { padding: 40px 20px 36px; }
+    .hero h1 { font-size: clamp(28px, 8vw, 48px); }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .hero-actions .btn { justify-content: center; }
+    .stats-row { gap: 20px; }
+    .section { padding: 28px 16px; }
+    .section-header { flex-direction: column; gap: 10px; }
+    .dash-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .two-col { grid-template-columns: 1fr; }
+    #page-messages .msg-layout { grid-template-columns: 1fr; height: auto; }
+    .msg-sidebar { height: calc(100vh - 140px); }
+    .chat-area { display: none !important; }
+    .chat-area.mobile-open { display: flex !important; position: fixed; inset: 0; z-index: 150; padding-top: 56px; padding-bottom: 80px; background: var(--cream); }
+    .form-row { grid-template-columns: 1fr; }
+    .profile-top { flex-direction: column; align-items: center; text-align: center; }
+    .profile-hero { padding: 28px 20px; }
+    .jobs-grid { grid-template-columns: 1fr; }
+    .freelancers-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .cat-grid { grid-template-columns: repeat(3,1fr); }
+    body { padding-bottom: 80px; }
+    .mobile-nav { display: block; }
+  }
+
+  @media(max-width:480px) {
+    nav { padding: 0 12px; height: 56px; }
+    .nav-logo { font-size: 18px; }
+    .nav-right { gap: 6px; }
+    .nav-right .btn-pista { font-size: 12px; padding: 8px 14px; }
+    .hero { padding: 28px 14px 24px; }
+    .hero h1 { font-size: 26px; }
+    .hero p { font-size: 14px; margin-bottom: 20px; }
+    .hero-actions .btn { padding: 12px 16px; font-size: 13px; }
+    .stats-row { gap: 14px; padding-top: 24px; flex-wrap: wrap; justify-content: center; }
+    .stat-item .num { font-size: 22px; }
+    .stat-item .lbl { font-size: 10px; }
+    .section { padding: 20px 12px; }
+    .section-title { font-size: 20px; }
+    .dash-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .dash-stat { padding: 14px; }
+    .ds-icon { font-size: 20px; margin-bottom: 6px; }
+    .ds-num { font-size: 22px; }
+    .ds-label { font-size: 10px; }
+    .freelancers-grid { grid-template-columns: 1fr; }
+    .cat-grid { grid-template-columns: repeat(2,1fr); gap: 8px; }
+    .cat-card { padding: 16px 10px; }
+    .profile-av { width: 70px; height: 70px; font-size: 24px; }
+    .profile-stat .num { font-size: 18px; }
+    .profile-stats-row { gap: 16px; justify-content: center; }
+    .modal { padding: 22px 16px; border-radius: 14px; max-width: 100%; margin: 10px; }
+    .modal h2 { font-size: 18px; }
+    #toast { bottom: 88px; right: 10px; left: 10px; max-width: none; font-size: 12px; }
+    .panel { padding: 14px; }
+    .panel h4 { font-size: 15px; margin-bottom: 12px; }
+    .tabs { border-radius: 10px; }
+    .tab { font-size: 12px; padding: 7px 8px; }
+    .cats { gap: 6px; }
+    .cat-chip { padding: 6px 12px; font-size: 11px; }
+    .fl-card { padding: 18px 14px; }
+    .fl-avatar { width: 58px; height: 58px; font-size: 20px; }
+    .fl-rate { font-size: 17px; }
+    .job-card { padding: 16px; }
+    .job-logo { width: 38px; height: 38px; font-size: 18px; }
+    .job-card h3 { font-size: 14px; }
+    .job-budget { font-size: 16px; }
+    .invoices-table th:nth-child(3), .invoices-table td:nth-child(3),
+    .invoices-table th:nth-child(5), .invoices-table td:nth-child(5) { display: none; }
+    .conv-item { padding: 10px 12px; }
+    .msg-sidebar-head { padding: 14px 12px 10px; }
+    .chat-input-row { padding: 12px; }
+    .chat-messages { padding: 16px 12px; }
+  }
+
+  /* ── EXTRA MOBILE IMPROVEMENTS ── */
+  @media(max-width:900px) {
+    /* Make nav-right cleaner on mobile */
+    .nav-right { gap: 6px; }
+    .nav-right .btn-outline { display: none !important; }
+
+    /* Make buttons full width in modals */
+    .form-actions { flex-direction: column; }
+    .form-actions .btn { width: 100%; justify-content: center; }
+
+    /* Dashboard stats 2x2 grid */
+    .dash-grid { grid-template-columns: 1fr 1fr; }
+
+    /* Messages - show conversation list properly */
+    #page-messages .msg-layout { grid-template-columns: 1fr; height: auto; min-height: calc(100vh - 140px); }
+    .msg-sidebar { height: auto; max-height: calc(100vh - 200px); border-right: none; border-bottom: 2px solid var(--border-light); }
+
+    /* Fix hero padding */
+    .hero { padding: 36px 18px 32px; }
+    .stats-row { gap: 16px; }
+    .stat-item .num { font-size: 24px; }
+
+    /* Section headers stack vertically */
+    .section-header { align-items: flex-start; }
+
+    /* Jobs grid single column */
+    .jobs-grid { grid-template-columns: 1fr; }
+
+    /* Profile fixes */
+    .profile-hero { padding: 24px 16px; }
+    .profile-top { flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+    .profile-actions { justify-content: center; }
+
+    /* Hide desktop nav */
+    .nav-links { display: none !important; }
+  }
+
+  @media(max-width:480px) {
+    /* Very small screens */
+    .hero h1 { font-size: 24px; line-height: 1.2; }
+    .hero p { font-size: 14px; }
+    .nav-logo { font-size: 18px; }
+    .avatar { width: 32px; height: 32px; font-size: 11px; }
+    .section { padding: 18px 12px; }
+    .section-title { font-size: 20px; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .freelancers-grid { grid-template-columns: 1fr; }
+    .dash-stat { padding: 14px; }
+    .ds-num { font-size: 22px; }
+    .modal { margin: 8px; padding: 20px 14px; }
+    .modal h2 { font-size: 18px; }
+
+    /* Toast above mobile nav */
+    #toast { bottom: 90px; right: 10px; left: 10px; max-width: none; }
+
+    /* Invoices table - hide some columns */
+    .invoices-table th:nth-child(3),
+    .invoices-table td:nth-child(3),
+    .invoices-table th:nth-child(5),
+    .invoices-table td:nth-child(5) { display: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -347,7 +502,7 @@
       <div id="conv-list"></div>
     </div>
     <div class="chat-area" id="chat-area">
-      <div class="chat-head">
+      <div class="chat-head"><button onclick="closeMobileChat()" style="display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-mid);padding:0 8px 0 0" class="mob-back-btn">←</button>
         <div class="avatar" id="chat-av" style="width:42px;height:42px;font-size:15px">?</div>
         <div class="chat-head-info"><h4 id="chat-name">Select a conversation</h4><p id="chat-status">Online now</p></div>
         <button class="btn btn-sky" style="margin-left:auto;font-size:13px;padding:9px 18px" onclick="openModal('modal-invoice')">💳 Invoice</button>
@@ -573,7 +728,7 @@
 // ════════════════════════════════════════════
 //  CONFIG — change this to your backend URL
 // ════════════════════════════════════════════
-const API = 'https://lancerhub-2.onrender.com/api';
+const API = 'http://localhost:5000/api';
 
 // ── App state ────────────────────────────────
 let AUTH = { token: localStorage.getItem('lh_token'), user: JSON.parse(localStorage.getItem('lh_user') || 'null') };
@@ -1295,6 +1450,53 @@ if (AUTH.token) connectSocket();
 renderJobs();
 
 
+
+// ── MOBILE NAV ────────────────────────────────
+function setMobNav(activeId) {
+  document.querySelectorAll('.mob-nav-item').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById(activeId);
+  if (el) el.classList.add('active');
+}
+
+// Sync mobile nav when desktop nav is used
+const _origShowPage = showPage;
+showPage = function(name, el) {
+  _origShowPage(name, el);
+  const map = { home:'mob-home', jobs:'mob-jobs', freelancers:'mob-freelancers', messages:'mob-messages', dashboard:'mob-dashboard', profile:null };
+  if (map[name]) setMobNav(map[name]);
+};
+
+// ── MOBILE CHAT OPEN/CLOSE ────────────────────
+function openMobileChat(conversationId, otherUserId, otherName) {
+  openChat(conversationId, otherUserId, otherName);
+  document.getElementById('chat-area').classList.add('mobile-open');
+}
+
+function closeMobileChat() {
+  document.getElementById('chat-area').classList.remove('mobile-open');
+}
+
 </script>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <div class="mob-nav-item active" id="mob-home" onclick="showPage('home',this);setMobNav('mob-home')">
+      <span class="mob-icon">🏠</span><span>Home</span>
+    </div>
+    <div class="mob-nav-item" id="mob-jobs" onclick="showPage('jobs',this);setMobNav('mob-jobs')">
+      <span class="mob-icon">💼</span><span>Jobs</span>
+    </div>
+    <div class="mob-nav-item" id="mob-freelancers" onclick="showPage('freelancers',this);setMobNav('mob-freelancers')">
+      <span class="mob-icon">👥</span><span>Talent</span>
+    </div>
+    <div class="mob-nav-item" id="mob-messages" onclick="showPage('messages',this);setMobNav('mob-messages')">
+      <span class="mob-icon">💬</span><span>Messages</span>
+    </div>
+    <div class="mob-nav-item" id="mob-dashboard" onclick="showPage('dashboard',this);setMobNav('mob-dashboard')">
+      <span class="mob-icon">📊</span><span>Dashboard</span>
+    </div>
+  </div>
+</div>
 </body>
 </html>
