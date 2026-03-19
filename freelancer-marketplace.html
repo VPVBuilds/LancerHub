@@ -57,7 +57,7 @@
   .btn-ghost { background: transparent; color: var(--text-soft); }
   .btn-ghost:hover { color: var(--text); background: var(--cream-deep); }
 
-  nav { position: sticky; top: 0; z-index: 100; background: rgba(253,248,240,.92); backdrop-filter: blur(20px); border-bottom: 1.5px solid var(--border-light); padding: 0 40px; height: 68px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(253,248,240,.92); backdrop-filter: blur(20px); border-bottom: 1.5px solid var(--border-light); padding: 0 20px; height: 60px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); overflow: hidden; }
   .nav-logo { font-family: var(--font-head); font-size: 24px; font-weight: 800; color: var(--brown); }
   .nav-logo span { color: var(--pista-dark); }
   .nav-links { display: flex; gap: 2px; }
@@ -378,6 +378,119 @@
     .invoices-table td:nth-child(5) { display: none; }
   }
 
+
+  /* ════ MOBILE FIXES ════ */
+  @media(max-width:600px) {
+    /* NAV */
+    nav { padding: 0 12px !important; height: 56px !important; }
+    .nav-logo { font-size: 17px !important; }
+    .nav-right { gap: 6px !important; flex-shrink: 0; }
+    .nav-right .btn-outline { font-size: 11px !important; padding: 6px 10px !important; }
+    .avatar { width: 30px !important; height: 30px !important; font-size: 11px !important; }
+    #notif-bell { width: 32px !important; height: 32px !important; font-size: 14px !important; }
+
+    /* HERO */
+    .hero { padding: 24px 14px 20px !important; }
+    .hero h1 { font-size: 22px !important; line-height: 1.2 !important; }
+    .hero p { font-size: 13px !important; margin-bottom: 18px !important; }
+    .hero-actions { flex-direction: column !important; gap: 8px !important; margin-bottom: 28px !important; }
+    .hero-actions .btn { width: 100% !important; justify-content: center !important; padding: 12px !important; font-size: 14px !important; }
+    .stats-row { gap: 12px !important; padding-top: 20px !important; }
+    .stat-item .num { font-size: 20px !important; }
+    .stat-item .lbl { font-size: 10px !important; }
+
+    /* SECTIONS */
+    .section { padding: 18px 12px !important; }
+    .section-title { font-size: 20px !important; }
+    .section-header { flex-direction: column !important; gap: 10px !important; }
+    .section-header .btn { width: 100% !important; justify-content: center !important; }
+
+    /* CATEGORIES */
+    .cat-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    .cat-card { padding: 16px 10px !important; }
+
+    /* JOBS */
+    .jobs-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .job-card { padding: 16px !important; }
+    .job-card h3 { font-size: 14px !important; }
+    .job-budget { font-size: 15px !important; }
+
+    /* FREELANCERS */
+    .freelancers-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+    .fl-card { padding: 16px 12px !important; }
+    .fl-avatar { width: 54px !important; height: 54px !important; font-size: 18px !important; }
+    .fl-name { font-size: 14px !important; }
+    .fl-rate { font-size: 16px !important; }
+
+    /* MESSAGES */
+    #page-messages .msg-layout { grid-template-columns: 1fr !important; }
+    .msg-sidebar { height: auto !important; max-height: 50vh !important; }
+    .chat-messages { padding: 14px 12px !important; }
+    .msg-bubble { max-width: 85% !important; }
+
+    /* DASHBOARD */
+    .dash-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    .dash-stat { padding: 14px 10px !important; }
+    .ds-num { font-size: 22px !important; }
+    .ds-label { font-size: 10px !important; }
+    .two-col { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .panel { padding: 14px !important; }
+
+    /* MODALS */
+    .modal-overlay { padding: 12px !important; }
+    .modal { padding: 20px 14px !important; border-radius: 16px !important; }
+    .modal h2 { font-size: 18px !important; }
+    .form-row { grid-template-columns: 1fr !important; }
+
+    /* INVOICES TABLE */
+    .invoices-table th:nth-child(3),
+    .invoices-table td:nth-child(3),
+    .invoices-table th:nth-child(4),
+    .invoices-table td:nth-child(4),
+    .invoices-table th:nth-child(5),
+    .invoices-table td:nth-child(5) { display: none !important; }
+
+    /* PROFILE */
+    .profile-hero { padding: 22px 14px !important; }
+    .profile-top { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 14px !important; }
+    .profile-av { width: 72px !important; height: 72px !important; font-size: 26px !important; }
+    .profile-stats-row { gap: 14px !important; justify-content: center !important; flex-wrap: wrap !important; }
+    .profile-stat .num { font-size: 20px !important; }
+
+    /* TOAST */
+    #toast { bottom: 85px !important; right: 10px !important; left: 10px !important; max-width: none !important; font-size: 12px !important; }
+
+    /* CATS CHIPS */
+    .cats { gap: 6px !important; }
+    .cat-chip { padding: 6px 12px !important; font-size: 11px !important; }
+
+    /* HOW IT WORKS */
+    body > * [style*="grid-template-columns:repeat(auto-fit"] { grid-template-columns: 1fr !important; }
+  }
+
+
+  /* ── BACK BUTTON ── */
+  .back-btn {
+    display: none; align-items: center; gap: 6px;
+    cursor: pointer; color: var(--text-soft); font-size: 13px; font-weight: 600;
+    background: var(--cream-card); border: 2px solid var(--border);
+    border-radius: 10px; padding: 8px 14px; margin-bottom: 16px;
+    transition: all .15s; width: fit-content;
+  }
+  .back-btn:hover { border-color: var(--pista-dark); color: var(--pista-deep); background: var(--pista-light); }
+  .back-btn.visible { display: inline-flex; }
+
+  /* breadcrumb trail */
+  .breadcrumb {
+    display: none; align-items: center; gap: 6px; margin-bottom: 16px;
+    font-size: 13px; color: var(--text-soft); flex-wrap: wrap;
+  }
+  .breadcrumb.visible { display: flex; }
+  .bc-item { cursor: pointer; color: var(--pista-dark); font-weight: 500; }
+  .bc-item:hover { text-decoration: underline; }
+  .bc-sep { color: var(--border); }
+  .bc-current { color: var(--text-mid); font-weight: 600; }
+
 </style>
 </head>
 <body>
@@ -457,6 +570,11 @@
 
 <!-- JOBS -->
 <div id="page-jobs" class="page">
+  <div class="breadcrumb" id="bc-page-jobs">
+    <span class="bc-item" onclick="goBack()">← Back</span>
+    <span class="bc-sep">·</span>
+    <span class="bc-current" id="bc-label-page-jobs"></span>
+  </div>
   <div class="section">
     <div class="section-header">
       <div><div class="section-title">Browse Jobs</div><div class="section-sub">Find your next great project</div></div>
@@ -476,6 +594,11 @@
 
 <!-- FREELANCERS -->
 <div id="page-freelancers" class="page">
+  <div class="breadcrumb" id="bc-page-freelancers">
+    <span class="bc-item" onclick="goBack()">← Back</span>
+    <span class="bc-sep">·</span>
+    <span class="bc-current" id="bc-label-page-freelancers"></span>
+  </div>
   <div class="section">
     <div class="section-header">
       <div><div class="section-title">Top Freelancers</div><div class="section-sub">Hire verified, rated professionals</div></div>
@@ -493,6 +616,11 @@
 
 <!-- MESSAGES -->
 <div id="page-messages" class="page">
+  <div class="breadcrumb" id="bc-page-messages">
+    <span class="bc-item" onclick="goBack()">← Back</span>
+    <span class="bc-sep">·</span>
+    <span class="bc-current" id="bc-label-page-messages"></span>
+  </div>
   <div class="msg-layout">
     <div class="msg-sidebar">
       <div class="msg-sidebar-head">
@@ -518,6 +646,11 @@
 
 <!-- DASHBOARD -->
 <div id="page-dashboard" class="page">
+  <div class="breadcrumb" id="bc-page-dashboard">
+    <span class="bc-item" onclick="goBack()">← Back</span>
+    <span class="bc-sep">·</span>
+    <span class="bc-current" id="bc-label-page-dashboard"></span>
+  </div>
   <div class="section">
     <div class="section-header">
       <div><div class="section-title">My Dashboard</div><div class="section-sub">Your freelance overview</div></div>
@@ -555,6 +688,11 @@
 
 <!-- PROFILE -->
 <div id="page-profile" class="page">
+  <div class="breadcrumb" id="bc-page-profile">
+    <span class="bc-item" onclick="goBack()">← Back</span>
+    <span class="bc-sep">·</span>
+    <span class="bc-current" id="bc-label-page-profile"></span>
+  </div>
   <div class="profile-hero">
     <div class="profile-top">
       <div class="profile-av" style="background:linear-gradient(135deg,var(--pista-dark),var(--sky-dark))">AK</div>
@@ -794,8 +932,7 @@ function updateNavForAuth() {
     const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
     navRight.innerHTML = `
       <div id="notif-bell" onclick="showToast('🔔','No new notifications')">🔔<div id="notif-dot"></div></div>
-      <span style="font-size:14px;color:var(--text-mid);font-weight:500">Hi, ${user.name.split(' ')[0]}!</span>
-      <button class="btn btn-outline" onclick="handleLogout()">Sign Out</button>
+      <button class="btn btn-outline" style="font-size:12px;padding:7px 12px" onclick="handleLogout()">Sign Out</button>
       <div class="avatar" onclick="showPage('profile',document.querySelector('.nav-link'))" title="${user.name}">${initials}</div>`;
   } else {
     navRight.innerHTML = `
@@ -1368,11 +1505,44 @@ async function saveProfile() {
 // ════════════════════════════════════════════
 //  NAVIGATION
 // ════════════════════════════════════════════
+// ── PAGE HISTORY ─────────────────────────────
+const pageHistory = [];
+let currentPage = 'home';
+
+const pageLabels = {
+  home: 'Home', jobs: 'Find Jobs', freelancers: 'Freelancers',
+  messages: 'Messages', dashboard: 'Dashboard', profile: 'My Profile'
+};
+
 function showPage(name, el) {
+  // Push current page to history before navigating
+  if (currentPage && currentPage !== name) {
+    pageHistory.push(currentPage);
+  }
+  currentPage = name;
+
+  // Switch visible page
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   if (el && el.classList) el.classList.add('active');
+
+  // Push to browser history so browser back button works
+  window.history.pushState({ page: name }, '', '#' + name);
+
+  // Show/hide breadcrumb on non-home pages
+  document.querySelectorAll('.breadcrumb').forEach(b => b.classList.remove('visible'));
+  if (name !== 'home') {
+    const bc = document.getElementById('bc-page-' + name);
+    if (bc) {
+      bc.classList.add('visible');
+      const label = document.getElementById('bc-label-page-' + name);
+      if (label) label.textContent = pageLabels[name] || name;
+    }
+  }
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   if (name === 'jobs')        renderJobs(jobFilter);
   if (name === 'freelancers') renderFreelancers(flFilter);
@@ -1380,6 +1550,76 @@ function showPage(name, el) {
   if (name === 'dashboard')   loadDashboard();
   if (name === 'profile')     loadProfile();
 }
+
+// Go back one page
+function goBack() {
+  if (pageHistory.length > 0) {
+    const prev = pageHistory.pop();
+    currentPage = prev;
+
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('page-' + prev).classList.add('active');
+
+    // Activate correct nav link
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(l => {
+      if (l.textContent.toLowerCase().includes(prev === 'jobs' ? 'job' : prev)) {
+        l.classList.add('active');
+      }
+    });
+
+    // Update breadcrumb
+    document.querySelectorAll('.breadcrumb').forEach(b => b.classList.remove('visible'));
+    if (prev !== 'home') {
+      const bc = document.getElementById('bc-page-' + prev);
+      if (bc) bc.classList.add('visible');
+    }
+
+    window.history.back();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (prev === 'jobs')        renderJobs(jobFilter);
+    if (prev === 'freelancers') renderFreelancers(flFilter);
+    if (prev === 'messages')    renderConversations();
+    if (prev === 'dashboard')   loadDashboard();
+    if (prev === 'profile')     loadProfile();
+  } else {
+    // No history — go home
+    showPage('home', document.querySelector('.nav-link'));
+  }
+}
+
+// Handle browser back/forward buttons
+window.addEventListener('popstate', function(e) {
+  if (e.state && e.state.page) {
+    const name = e.state.page;
+    currentPage = name;
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll('.breadcrumb').forEach(b => b.classList.remove('visible'));
+    if (name !== 'home') {
+      const bc = document.getElementById('bc-page-' + name);
+      if (bc) bc.classList.add('visible');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (name === 'jobs')        renderJobs(jobFilter);
+    if (name === 'freelancers') renderFreelancers(flFilter);
+    if (name === 'messages')    renderConversations();
+    if (name === 'dashboard')   loadDashboard();
+    if (name === 'profile')     loadProfile();
+  }
+});
+
+// On page load, check URL hash
+window.addEventListener('load', function() {
+  const hash = window.location.hash.replace('#', '');
+  const validPages = ['home', 'jobs', 'freelancers', 'messages', 'dashboard', 'profile'];
+  if (hash && validPages.includes(hash)) {
+    showPage(hash, null);
+  }
+});
 
 function filterCat(el, cat) {
   document.querySelectorAll('#page-jobs .cats .cat-chip').forEach(c => c.classList.remove('active'));
@@ -1465,6 +1705,11 @@ showPage = function(name, el) {
   const map = { home:'mob-home', jobs:'mob-jobs', freelancers:'mob-freelancers', messages:'mob-messages', dashboard:'mob-dashboard', profile:null };
   if (map[name]) setMobNav(map[name]);
 };
+
+// Mobile back button (swipe-like feel)
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') goBack();
+});
 
 // ── MOBILE CHAT OPEN/CLOSE ────────────────────
 function openMobileChat(conversationId, otherUserId, otherName) {
